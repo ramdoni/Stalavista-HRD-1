@@ -1,941 +1,391 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html class="loading" lang="en" data-textdirection="ltr">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="../plugins/images/favicon.png">
-    <title>@yield('title')</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Bootstrap Core CSS -->
-    <link href="{{ asset('admin-css/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!-- Menu CSS -->
-    <link href="{{ asset('admin-css/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css') }}" rel="stylesheet">
-    <!-- toast CSS -->
-    <link href="{{ asset('admin-css/plugins/bower_components/toast-master/css/jquery.toast.css') }}" rel="stylesheet">
-    <!-- morris CSS -->
-    <link href="{{ asset('admin-css/plugins/bower_components/morrisjs/morris.css') }}" rel="stylesheet">
-    <!-- chartist CSS -->
-    <link href="{{ asset('admin-css/plugins/bower_components/chartist-js/dist/chartist.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin-css/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css') }}" rel="stylesheet">
-    <!-- Calendar CSS -->
-    <link href="{{ asset('admin-css/plugins/bower_components/calendar/dist/fullcalendar.css') }}" rel="stylesheet" />
-    <!-- animation CSS -->
-    <link href="{{ asset('admin-css/css/animate.css') }}" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ asset('admin-css/css/style.css') }}?time=<?=date('His')?>" rel="stylesheet">
-    <!-- color CSS -->
-    <link href="{{ asset('admin-css/css/colors/green.css?v=2') }}" id="theme" rel="stylesheet">
-    
-    <link href="{{ asset('admin-css/plugins/bower_components/datatables/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-    <style type="text/css">
-        body {
-            font-size: 12px;
-        }
-        table.table tr th, table.table tr td {
-            font-size: 12px;
-        }
-        .navbar-header {
-            background: #eaeaea;
-            border-top: 5px solid red;
-        }
-    </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+  <meta name="description" content="{{ get_setting('description-website') }}">
+  <meta name="keywords" content="{{ get_setting('keyword-website') }}">
+  <meta name="author" content="{{ get_setting('author') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>@yield('title') - {{ get_setting('title') }}</title>
+  <link rel="apple-touch-icon" href="{{ asset('app-assets/images/ico/apple-icon-120.png') }}">
+  <link rel="shortcut icon" type="image/x-icon" href="{{ asset('app-assets/images/ico/favicon.ico') }}">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700"
+  rel="stylesheet">
+  <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
+  <!-- BEGIN VENDOR CSS-->
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/vendors.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/pickers/daterange/daterangepicker.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/pickers/pickadate/pickadate.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/tables/datatable/datatables.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/pages/timeline.css') }}">
+  <!-- END VENDOR CSS-->
+  <!-- BEGIN MODERN CSS-->
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/app.css') }}">
+  <!-- END MODERN CSS-->
+  <!-- BEGIN Page Level CSS-->
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-compact-menu.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/charts/morris.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/fonts/simple-line-icons/style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/colors/palette-gradient.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/vendors/css/ui/jquery-ui.min.css') }}">
+  <!-- END Page Level CSS-->
+  <!-- BEGIN Custom CSS-->
+  <!-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}"> -->
+  <!-- END Custom CSS-->
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+
+  <style type="text/css">
+    .bg-info {
+      background: #4c3c84;
+    }
+  </style>
 </head>
-<body class="fix-header">
-
-     <!-- ============================================================== -->
-    <!-- Preloader -->
-    <!-- ============================================================== -->
-    <div class="preloader">
-        <svg class="circular" viewBox="25 25 50 50">
-            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
-        </svg>
-    </div>
-     
-    <!-- ============================================================== -->
-    <!-- Wrapper -->
-    <!-- ============================================================== -->
-    <div id="wrapper">
-        <!-- ============================================================== -->
-        <!-- Topbar header - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <nav class="navbar navbar-default navbar-static-top m-b-0">
-            <div class="navbar-header">
-                <div class="top-left-part">
-                    <!-- Logo -->
-                    <a class="logo" href="{{ route('karyawan.dashboard') }}">
-                        <!-- <span class="hidden-xs">&nbsp;</span>  -->
-                        <img  style="height: 46px;" src="http://www.arthaasiafinance.co.id/images/logo.png" />
-                    </a>
-                </div>
-                <!-- /Logo -->
-               
-                <ul class="nav navbar-top-links navbar-right pull-right">
-
-                    <li class="dropdown">
-                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="javascript:void(0)"> <img src="{{ asset('admin-css/images/user.png') }}" alt="user-img" width="36" class="img-circle"><b style="color:black;" class="hidden-xs">{{ Auth::user()->name }}</b><span class="caret"></span> </a>
-                        <ul class="dropdown-menu dropdown-user animated flipInY">
-                            <li>
-                                <div class="dw-user-box">
-                                    <div class="u-img"><img src="{{ asset('admin-css/images/user.png') }}" alt="user" /></div>
-                                    <div class="u-text">
-                                        <h4 style="color:black;">{{ Auth::user()->name }}</h4>
-                                    </div>
-                                </div>
+<body class="vertical-layout vertical-compact-menu 2-columns   menu-expanded fixed-navbar"
+data-open="click" data-menu="vertical-compact-menu" data-col="2-columns">
+  <!-- fixed-top-->
+  <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-dark bg-info navbar-shadow navbar-brand-center">
+    <div class="navbar-wrapper">
+      <div class="navbar-header">
+        <ul class="nav navbar-nav flex-row">
+          <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
+          <li class="nav-item">
+            <a class="navbar-brand" href="{{ route('administrator.dashboard') }}">
+              <!-- <img class="brand-text" alt="{{ get_setting('title') }}" src="{{ asset('images/logo/logo.png') }}" style="width: 160px;"> -->
+            </a>
+          </li>
+          <li class="nav-item d-md-none">
+            <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a>
+          </li>
+        </ul>
+      </div>
+      <div class="navbar-container content">
+        <div class="collapse navbar-collapse" id="navbar-mobile">
+          <ul class="nav navbar-nav mr-auto float-left">
+            <li class="nav-item d-none d-md-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+            <li class="nav-item d-none d-md-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
+            <li class="dropdown nav-item mega-dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Mega</a>
+              <ul class="mega-dropdown-menu dropdown-menu row">
+                <li class="col-md-2">
+                  <h6 class="dropdown-menu-header text-uppercase mb-1"><i class="la la-newspaper-o"></i> News</h6>
+                  <div id="mega-menu-carousel-example">
+                    <div>
+                      <img class="rounded img-fluid mb-1" src="../../../app-assets/images/slider/slider-2.png"
+                      alt="First slide"><a class="news-title mb-0" href="#">Poster Frame PSD</a>
+                      <p class="news-content">
+                        <span class="font-small-2">January 26, 2018</span>
+                      </p>
+                    </div>
+                  </div>
+                </li>
+                <li class="col-md-3">
+                  <h6 class="dropdown-menu-header text-uppercase"><i class="la la-random"></i> Drill down menu</h6>
+                  <ul class="drilldown-menu">
+                    <li class="menu-list">
+                      <ul>
+                        <li>
+                          <a class="dropdown-item" href="layout-2-columns.html"><i class="ft-file"></i> Page layouts & Templates</a>
+                        </li>
+                        <li><a href="#"><i class="ft-align-left"></i> Multi level menu</a>
+                          <ul>
+                            <li><a class="dropdown-item" href="#"><i class="la la-bookmark-o"></i>  Second level</a></li>
+                            <li><a href="#"><i class="la la-lemon-o"></i> Second level menu</a>
+                              <ul>
+                                <li><a class="dropdown-item" href="#"><i class="la la-heart-o"></i>  Third level</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="la la-file-o"></i> Third level</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="la la-trash-o"></i> Third level</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="la la-clock-o"></i> Third level</a></li>
+                              </ul>
                             </li>
-                            <li>
-                                <a style="font-size: 12px;"><i class="fa fa-star"></i> {{ isset(\Auth::user()->organisasiposition->name) ? \Auth::user()->organisasiposition->name : ''  }} Department {{ isset(\Auth::user()->department->name) ? \Auth::user()->department->name : '' }}</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            @if(\Session::get('is_login_administrator'))
-                                <li>
-                                    <a href="{{ route('karyawan.back-to-administrator') }}"> <i class="fa fa-key"></i> Back to Administrator</a>
-                                </li>
-                                <li role="separator" class="divider"></li>
-                            @endif
-                            <li>
-                                <a href="{{ route('karyawan.profile') }}">Profile</a>
-                            </li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Logout</a></li>
-                        </ul>
-                        <!-- /.dropdown-user -->
+                            <li><a class="dropdown-item" href="#"><i class="la la-hdd-o"></i> Second level, third link</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="la la-floppy-o"></i> Second level, fourth link</a></li>
+                          </ul>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="color-palette-primary.html"><i class="ft-camera"></i> Color palette system</a>
+                        </li>
+                        <li><a class="dropdown-item" href="sk-2-columns.html"><i class="ft-edit"></i> Page starter kit</a></li>
+                        <li><a class="dropdown-item" href="changelog.html"><i class="ft-minimize-2"></i> Change log</a></li>
+                        <li>
+                          <a class="dropdown-item" href="https://pixinvent.ticksy.com/"><i class="la la-life-ring"></i> Customer support center</a>
+                        </li>
+                      </ul> 
                     </li>
-                    <!-- /.dropdown -->
-                </ul>
-            </div>
-            <!-- /.navbar-header -->
-            <!-- /.navbar-top-links -->
-            <!-- /.navbar-static-side -->
-        </nav>
-        <!-- End Top Navigation -->
-        <!-- ============================================================== -->
-        <!-- Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav">
-                <div class="sidebar-head">
-                    <h3><span class="fa-fw open-close"><i class="ti-menu hidden-xs"></i><i class="ti-close visible-xs"></i></span> <span class="hide-menu">Navigation</span></h3> </div>
-                @include('layouts.nav')
-            </div>
+                  </ul>
+                </li>
+                <li class="col-md-3">
+                  <h6 class="dropdown-menu-header text-uppercase"><i class="la la-list-ul"></i> Accordion</h6>
+                  <div id="accordionWrap" role="tablist" aria-multiselectable="true">
+                    <div class="card border-0 box-shadow-0 collapse-icon accordion-icon-rotate">
+                      <div class="card-header p-0 pb-2 border-0" id="headingOne" role="tab"><a data-toggle="collapse" data-parent="#accordionWrap" href="#accordionOne"
+                        aria-expanded="true" aria-controls="accordionOne">Accordion Item #1</a></div>
+                      <div class="card-collapse collapse show" id="accordionOne" role="tabpanel" aria-labelledby="headingOne"
+                      aria-expanded="true">
+                        <div class="card-content">
+                          <p class="accordion-text text-small-3">Caramels dessert chocolate cake pastry jujubes bonbon.
+                            Jelly wafer jelly beans. Caramels chocolate cake liquorice
+                            cake wafer jelly beans croissant apple pie.</p>
+                        </div>
+                      </div>
+                      <div class="card-header p-0 pb-2 border-0" id="headingTwo" role="tab"><a class="collapsed" data-toggle="collapse" data-parent="#accordionWrap"
+                        href="#accordionTwo" aria-expanded="false" aria-controls="accordionTwo">Accordion Item #2</a></div>
+                      <div class="card-collapse collapse" id="accordionTwo" role="tabpanel" aria-labelledby="headingTwo"
+                      aria-expanded="false">
+                        <div class="card-content">
+                          <p class="accordion-text">Sugar plum bear claw oat cake chocolate jelly tiramisu
+                            dessert pie. Tiramisu macaroon muffin jelly marshmallow
+                            cake. Pastry oat cake chupa chups.</p>
+                        </div>
+                      </div>
+                      <div class="card-header p-0 pb-2 border-0" id="headingThree" role="tab"><a class="collapsed" data-toggle="collapse" data-parent="#accordionWrap"
+                        href="#accordionThree" aria-expanded="false" aria-controls="accordionThree">Accordion Item #3</a></div>
+                      <div class="card-collapse collapse" id="accordionThree" role="tabpanel" aria-labelledby="headingThree"
+                      aria-expanded="false">
+                        <div class="card-content">
+                          <p class="accordion-text">Candy cupcake sugar plum oat cake wafer marzipan jujubes
+                            lollipop macaroon. Cake dragée jujubes donut chocolate
+                            bar chocolate cake cupcake chocolate topping.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="col-md-4">
+                  <h6 class="dropdown-menu-header text-uppercase mb-1"><i class="la la-envelope-o"></i> Contact Us</h6>
+                  <form class="form form-horizontal">
+                    <div class="form-body">
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="inputName1">Name</label>
+                        <div class="col-sm-9">
+                          <div class="position-relative has-icon-left">
+                            <input class="form-control" type="text" id="inputName1" placeholder="John Doe">
+                            <div class="form-control-position pl-1"><i class="la la-user"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="inputEmail1">Email</label>
+                        <div class="col-sm-9">
+                          <div class="position-relative has-icon-left">
+                            <input class="form-control" type="email" id="inputEmail1" placeholder="john@example.com">
+                            <div class="form-control-position pl-1"><i class="la la-envelope-o"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label" for="inputMessage1">Message</label>
+                        <div class="col-sm-9">
+                          <div class="position-relative has-icon-left">
+                            <textarea class="form-control" id="inputMessage1" rows="2" placeholder="Simple Textarea"></textarea>
+                            <div class="form-control-position pl-1"><i class="la la-commenting-o"></i></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12 mb-1">
+                          <button class="btn btn-info float-right" type="button"><i class="la la-paper-plane-o"></i> Send </button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item nav-search"><a class="nav-link nav-link-search" href="#"><i class="ficon ft-search"></i></a>
+              <div class="search-input">
+                <input class="input" type="text" placeholder="Explore Modern...">
+              </div>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav float-right">
+            <li class="dropdown dropdown-user nav-item">
+              <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                <span class="mr-1">Hello,
+                  <span class="user-name text-bold-700">{{ Auth::user()->name }}</span>
+                </span>
+                <span class="avatar avatar-online">
+                  <img src="../../../app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"><i></i></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="{{ route('karyawan.profile') }}"><i class="ft-user"></i> Edit Profile</a>
+                @if(\Session::get('is_login_administrator'))
+                <a href="{{ route('karyawan.back-to-administrator') }}"class="dropdown-item"> <i class="la la-key"></i> Back to Administrator</a>
+                @endif
+                <div class="dropdown-divider"></div><a class="dropdown-item" href="{{ route('logout') }}"><i class="ft-power"></i> Logout</a>
+              </div>
+            </li>
+            <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-id"></i><span class="selected-language"></span></a>
+              <div class="dropdown-menu" aria-labelledby="dropdown-flag">
+                <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-gb"></i> English</a>
+              </div>
+            </li>
+            <li class="dropdown dropdown-notification nav-item">
+              <a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon ft-bell"></i>
+                <span class="badge badge-pill badge-default badge-danger badge-default badge-up badge-glow">0</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                <li class="dropdown-menu-header">
+                  <h6 class="dropdown-header m-0">
+                    <span class="grey darken-2">Notifications</span>
+                  </h6>
+                  <span class="notification-tag badge badge-default badge-danger float-right m-0">0 </span>
+                </li>
+                <li class="scrollable-container media-list w-100">
+                  <p class="text-center"><i>Empty</i></p>
+                </li>
+                <li class="dropdown-menu-footer"><a class="dropdown-item text-muted text-center" href="javascript:void(0)">Read all notifications</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Left Sidebar -->
-        <!-- ============================================================== -->
+      </div>
+    </div>
+  </nav>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+  <div class="main-menu menu-fixed menu-light menu-accordion menu-shadow" data-scroll-to-active="true">
+    <div class="main-menu-content">
+      <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+        <li class=" nav-item"><a href="{{ route('administrator.dashboard') }}"><i class="la la-home"></i><span class="menu-title" data-i18n="nav.dash.main">Dashboard</span></a></li>
+        <li class=" nav-item"><a href="#"><i class="la la-television"></i><span class="menu-title" data-i18n="nav.templates.main">Management From</span></a>
+          <ul class="menu-content">
+            <li><a class="menu-item" href="{{ route('karyawan.cuti.index') }}">Leave Employee</a></li>
+            <li><a class="menu-item" href="{{ route('karyawan.payment-request.index') }}">Payment Request</a></li>
+            <li><a class="menu-item" href="{{ route('karyawan.medical.index') }}">Medical Reimbursement</a></li>
+            <li><a class="menu-item" href="{{ route('karyawan.overtime.index') }}">Overtime Sheet</a></li>
+            <li><a class="menu-item" href="{{ route('karyawan.exit-interview.index') }}">Exit Interview & Clearance</a></li>
+            <li><a class="menu-item" href="{{ route('karyawan.training.index') }}">Training & Business Trip</a></li>
+          </ul>
+        </li>
+
+        @if(cek_approval_user())
+        <li>
+            <a href="javascript:void(0)" class="waves-effect">
+                <i class="mdi mdi-account-check fa-fw"></i> <span class="hide-menu atas">Management Approval (Assign)<span class="fa arrow"></span></span>
+                @if(cek_overtime_approval_user_2() > 0 || count_approval_payment_request() > 0 || count_approval_medical_karyawan('null') > 0 || count_approval_training('null') > 0 )
+                    <div class="notify" style="position: absolute;top: 61px;right: 10px;"> <span class="heartbit"></span> <span class="point"></span> </div>
+                @endif
+            </a>
+            <ul class="nav nav-second-level">
+            @foreach(list_approval_user() as $item)
+                <?php if($item['link'] == 'training_mengetahui') { continue; } ?>
+                <li>
+                    <a href="{{ route('karyawan.approval.'.  $item['link'].'.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">{{ $item['nama_menu'] }}</span>
+                        
+                        @if($item['link'] == 'cuti')
+                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_cuti_approved_personalia() }}</label>
+                        @endif
+
+                        @if($item['link'] == 'overtime')
+                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{cek_overtime_approval_user_2()}}</label>
+                        @endif
+                        
+                        @if($item['link'] =='payment_request')
+                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_approval_payment_request() }}</label>
+                        @endif
+
+                        @if($item['link'] =='medical')
+                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_approval_medical_karyawan('null') }}</label>
+                        @endif
+
+                        @if($item['link'] =='training')
+                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_approval_training('null') }}</label>
+                        @endif
+                    </a>
+                </li>
+            @endforeach
+            </ul>
+        </li>
+    @endif
+    
+      </ul>
+    </div>
+  </div>
+  <div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-header row">
+          <div class="content-header-left col-md-6 col-12 mb-2">
+            <h3 class="content-header-title">@yield('title')</h3>
+            <div class="row breadcrumbs-top">
+              <div class="breadcrumb-wrapper col-12">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                  <li class="breadcrumb-item"><a href="@yield('page-url')">@yield('title')</a></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          @hasSection('content')
+          <div class="content-header-right col-md-6 col-12">
+            <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
+              @hasSection('page-create')
+              <button class="btn btn-info round box-shadow-2 px-2" onclick="window.location='@yield('page-create')'" id="btnGroupDrop1" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="ft-plus icon-left"></i> Create @yield('title')
+              </button>
+              @endif
+              @yield('custom-button')
+            </div>
+          </div>
+        </div>
+        <div class="content-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-content collapse show">
+                  <div class="card-body">
+                    <p>@yield('content')</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        @endif
         
-        @yield('content')
+        @hasSection('content-2')
+           @yield('content-2')
+        @endif
 
         @include('layouts.alert')
-
-    <!-- sample modal content -->
-    <div id="modal_history_approval" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">History Approval</h4> </div>
-                    <div class="modal-body" id="modal_content_history_approval"></div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default waves-effect btn-sm" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
     </div>
-
-    <script type="text/javascript">
-        
-        function status_approval_exit(id)
-        {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-approval-exit') }}',
-                data: {'id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var el = '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                if(data.data.is_approved_atasan == 1){
-                                    el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                }
-
-                                if(data.data.is_approved_atasan == 0){
-                                    el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                }
-
-                                if(data.data.is_approved_atasan === null){
-                                    el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                }
-
-                                el +='<div class="sl-right">'+
-                                                    '<div><a href="#">'+ data.data.nama_atasan +'</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                        
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                if(data.data.is_approve_hrd_actual_bill == 1){
-                                    el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                }
-
-                                if(data.data.is_approve_hrd_actual_bill == 0){
-                                    el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                }
-                                
-                                if(data.data.is_approve_hrd_actual_bill === null){
-                                    el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                }
-                                
-                                               
-                                        el += '<div class="sl-right">'+
-                                                    '<div><a href="#">HRD</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                        if(data.data.is_approve_finance_actual_bill == 1){
-                                            el +='<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                        }
-
-                                        if(data.data.is_approve_finance_actual_bill == 0){
-                                            el +='<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                        }
-
-                                        if(data.data.is_approve_finance_actual_bill === null){
-                                            el +='<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                        }
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">FINANCE</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-                        
-                        
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-
-        function status_approval_actual_bill(id)
-        {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-training-bill') }}',
-                data: {'foreign_id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var el = '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.is_approve_atasan_actual_bill == 1){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-
-                                            if(data.data.is_approve_atasan_actual_bill == 0){
-                                                el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.is_approve_atasan_actual_bill === null){
-                                                el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                            }
-
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">'+ data.data.atasan +'</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                        if(data.data.pengambilan_uang_muka == null)
-                        {
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                        if(data.data.is_approve_hrd_actual_bill == 1){
-                                            el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                        }
-                                        if(data.data.is_approve_hrd_actual_bill == 0){
-                                            el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                        }
-                                        if(data.data.is_approve_hrd_actual_bill === null){
-                                            el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                        }
-                                                
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">HRD</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-                        }
-                        else
-                        {
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.is_approve_hrd_actual_bill == 1){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-                                            if(data.data.is_approve_hrd_actual_bill == 0){
-                                                el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.is_approve_hrd_actual_bill === null){
-                                                el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                            }
-
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">HRD</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.is_approve_finance_actual_bill == 1){
-                                                el +='<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-                                            if(data.data.is_approve_finance_actual_bill == 0){
-                                                el +='<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.is_approve_finance_actual_bill ===null){
-                                                el +='<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                            }
-                                                
-                                                el += '<div class="sl-right">'+
-                                                    '<div><a href="#">FINANCE</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-                        }
-                        
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-
-        function status_approval_training(id)
-        {
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-approval-training') }}',
-                data: {'foreign_id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var el = '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                        if(data.data.is_approved_atasan == 1){
-                                            el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                        }
-                                        if(data.data.is_approved_atasan == 0){
-                                            el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                        }
-                                        if(data.data.is_approved_atasan === null){
-                                            el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                        }
-
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">'+ data.data.atasan +'</a> </div>'+
-                                                    '<div class="desc">'+ (data.data.date_approved_atasan != null ? data.data.date_approved_atasan : '' ) +'<p>'+ (data.data.catatan_atasan != null ? data.data.catatan_atasan : '' )  +'</p></div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                        if(data.data.pengambilan_uang_muka === null)
-                        {
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                        if(data.data.approved_hrd == 1){
-                                            el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                        }
-                                        if(data.data.approved_hrd == 0){
-                                            el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                        }
-                                        if(data.data.approved_hrd === null){
-                                            el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                        }
-                                               
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">HRD</a> </div>'+
-                                                    '<div class="desc">'+ (data.data.approved_hrd == 1 ? '<small>'+ data.data.approved_hrd_date +'</small>' : '')  +'</div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-                        }
-                        else
-                        {
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                        if(data.data.approved_hrd == 1){
-                                            el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';   
-                                        }
-                                        if(data.data.approved_hrd == 0){
-                                            el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';   
-                                        }
-                                        if(data.data.approved_hrd === null){
-                                            el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';   
-                                        }
-
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">HRD</a> </div>'+
-                                                    '<div class="desc">'+ (data.data.approved_hrd == 1 ? '<small>'+ data.data.approved_hrd_date +'</small>' : '')  +'</div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                            el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.approved_finance == 1){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-                                            if(data.data.approved_finance == 0){
-                                                el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.approved_finance === null){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-info"></i></div>';
-                                            }
-                                            
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">FINANCE</a> </div>'+
-                                                    '<div class="desc">'+ (data.data.approved_finance == 1 ? '<small>'+ data.data.approved_finance_date +'</small>' : '')  +'</div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-                        }
-                        
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-
-        function status_approval_payment_request(id)
-        {
-             $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-approval-payment-request') }}',
-                data: {'foreign_id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var el = '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                        if(data.data.is_proposal_approved == 1){
-                                            el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                        }
-                                        if(data.data.is_proposal_approved == 0){
-                                            el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                        }
-                                        if(data.data.is_proposal_approved === null){
-                                            el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                        }
-                                            
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">Proposal Approval</a></div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                         el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.is_proposal_verification_approved == 1){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-                                            if(data.data.is_proposal_verification_approved == 0){
-                                                el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.is_proposal_verification_approved === null){
-                                                el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                            }
-
-                                                el += '<div class="sl-right">'+
-                                                    '<div><a href="#">Proposal Verification</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                         el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.is_payment_approved == 1){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-                                            if(data.data.is_payment_approved == 0){
-                                                el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.is_payment_approved === null){
-                                                el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                            }
-
-                                            el +='<div class="sl-right">'+
-                                                    '<div><a href="#">Payment Approval</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-
-        function status_approval_overtime(id)
-        {
-             $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-approval-overtime') }}',
-                data: {'foreign_id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var el = '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                            if(data.data.is_approved_atasan == 1){
-                                                el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                            }
-                                            if(data.data.is_approved_atasan == 0){
-                                                el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                            }
-                                            if(data.data.is_approved_atasan === null){
-                                                el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                            }
-
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">ATASAN</a> </div>'+
-                                                    '<div class="desc">'+ data.data.atasan.name +' / '+ data.data.atasan.nik + '<br />'+ (data.data.date_approved_atasan != null ? data.data.date_approved_atasan : '' ) +'<p>'+ (data.data.catatan_atasan != null ? data.data.catatan_atasan : '' )  +'</p></div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                    el += '<div class="panel-body">'+
-                                '<div class="steamline">'+
-                                    '<div class="sl-item">';
-
-                                    if(data.data.is_hr_manager == 1){
-                                        el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                    }
-                                    if(data.data.is_hr_manager == 0){
-                                        el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                    }
-                                    if(data.data.is_hr_manager === null){
-                                        el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                    }
-
-                                    el += '<div class="sl-right"><div><a href="#">DIREKTUR </a> </div>';
-
-                                    if(data.data.is_hr_manager !== null){
-                                       el += '<div class="desc">'+ data.data.hr_manager.name +' / '+ data.data.hr_manager.nik +'<p>'+ data.data.hr_manager_date +'</p></div>'; 
-                                    }
-                                    
-                                    el += '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-
-                    el += '<div class="panel-body">'+
-                                '<div class="steamline">'+
-                                    '<div class="sl-item">';
-
-                                    if(data.data.is_hr_benefit_approved == 1){
-                                        el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                    }
-                                    if(data.data.is_hr_benefit_approved == 0){
-                                        el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                    }
-                                    if(data.data.is_hr_benefit_approved === null){
-                                        el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                    }
-
-                                    el += '<div class="sl-right">'+
-                                            '<div><a href="#">HR BENEFIT</a> </div>';
-
-
-                                    if(data.data.is_hr_benefit_approved !== null){
-                                       el += '<div class="desc">'+ data.data.hr_benefit.name +' / '+ data.data.hr_benefit.nik +'<p>'+ data.data.hr_benefit_date +'</p></div>'; 
-                                    }
-                                    
-                                    el +='</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-
-                    
-
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-
-        function status_approval_medical(id)
-        {
-             $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-approval-medical') }}',
-                data: {'foreign_id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var  el = '<div class="panel-body">'+
-                                '<div class="steamline">'+
-                                    '<div class="sl-item">';
-
-                                    if(data.data.is_approved_hr_benefit == 1){
-                                        el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                    }
-                                    if(data.data.is_approved_hr_benefit == 0){
-                                        el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                    }
-                                    if(data.data.is_approved_hr_benefit === null){
-                                        el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                    }
-
-                                    el += '<div class="sl-right">'+
-                                            '<div><a href="#">HR BENEFIT</a> </div>';
-
-                                    if(data.data.is_approved_hr_benefit !== null){
-                                        el += '<div class="desc">'+ data.data.hr_benefit.name +' / '+ data.data.hr_benefit.nik +'<p>'+ data.data.hr_benefit_date +'</p></div>'; 
-                                    }
-
-                                    el += '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-
-                    el += '<div class="panel-body">'+
-                                '<div class="steamline">'+
-                                    '<div class="sl-item">';
-
-                                    if(data.data.is_approved_manager_hr == 1){
-                                        el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                    }
-                                    if(data.data.is_approved_manager_hr == 0){
-                                        el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                    }
-                                    if(data.data.is_approved_manager_hr === null){
-                                        el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                    }
-
-                                    el += '<div class="sl-right">'+
-                                            '<div><a href="#">MANAGER HR OPR </a> </div>';
-
-                                    if(data.data.is_approved_manager_hr !== null){
-                                        el += '<div class="desc">'+ data.data.manager_hr.name +' / '+ data.data.manager_hr.nik +'<p>'+ data.data.manager_hr_date +'</p></div>'; 
-                                    }
-
-                                    el += '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-
-                    if(data.data.show_gm_hr =='yes')
-                    {
-                        el += '<div class="panel-body">'+
-                                '<div class="steamline">'+
-                                    '<div class="sl-item">';
-
-                                    if(data.data.is_approved_gm_hr == 1){
-                                        el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                    }
-                                    if(data.data.is_approved_gm_hr == 0){
-                                        el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                    }
-                                    if(data.data.is_approved_gm_hr === null){
-                                        el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                    }
-
-                                    el += '<div class="sl-right">'+
-                                            '<div><a href="#">GM HR </a> </div>'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>';
-                    }
-
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-
-        function detail_approval_cuti(id)
-        {
-             $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-history-approval-cuti') }}',
-                data: {'foreign_id' : id ,'_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    var el = '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                if(data.data.is_approved_atasan == 1){
-                                    el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                }
-
-                                if(data.data.is_approved_atasan == 0){
-                                    el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                }
-                                
-                                if(data.data.is_approved_atasan === null){
-                                    el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                }
-                                
-                                            
-                                            el += '<div class="sl-right">'+
-                                                    '<div><a href="#">'+ data.data.atasan +'</a> </div>'+
-                                                    '<div class="desc">'+ (data.data.date_approved_atasan != null ? data.data.date_approved_atasan : ''  ) +'<p>'+ (data.data.catatan_atasan !=null ? data.data.catatan_atasan : '' ) +'</p></div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-                        el += '<div class="panel-body">'+
-                                        '<div class="steamline">'+
-                                            '<div class="sl-item">';
-
-                                    if(data.data.is_approved_personalia == 1){
-                                        el += '<div class="sl-left bg-success"> <i class="fa fa-check"></i></div>';
-                                    }
-
-                                    if(data.data.is_approved_personalia == 0){
-                                        el += '<div class="sl-left bg-danger"> <i class="fa fa-close"></i></div>';
-                                    }
-
-                                    if(data.data.is_approved_personalia === null){
-                                        el += '<div class="sl-left bg-warning"> <i class="fa fa-info"></i></div>';
-                                    }
-
-                                        
-                                        el += '<div class="sl-right">'+
-                                                    '<div><a href="#">Personalia</a> </div>'+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</div>';
-
-
-                    $("#modal_content_history_approval").html(el);
-                }
-            });
-
-            $("#modal_history_approval").modal('show');
-        }
-    </script>
-
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="{{ asset('admin-css/plugins/bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{{ asset('admin-css/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <!-- Menu Plugin JavaScript -->
-    <script src="{{ asset('admin-css/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js') }}"></script>
-    <!--slimscroll JavaScript -->
-    <script src="{{ asset('admin-css/js/jquery.slimscroll.js') }}"></script>
-    <!--Wave Effects -->
-    <script src="{{ asset('admin-css/js/waves.js') }}"></script>
-    <!--Counter js -->
-    <script src="{{ asset('admin-css/plugins/bower_components/waypoints/lib/jquery.waypoints.js') }}"></script>
-    <script src="{{ asset('admin-css/plugins/bower_components/counterup/jquery.counterup.min.js') }}"></script>
-    <!--Morris JavaScript -->
-    <script src="{{ asset('admin-css/plugins/bower_components/raphael/raphael-min.js') }}"></script>
-    <script src="{{ asset('admin-css/plugins/bower_components/morrisjs/morris.js') }}"></script>
-    <!-- chartist chart -->
-    <script src="{{ asset('admin-css/plugins/bower_components/chartist-js/dist/chartist.min.js') }}"></script>
-    <script src="{{ asset('admin-css/plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js') }}"></script>
-    <!-- Calendar JavaScript -->
-    <script src="{{ asset('admin-css/plugins/bower_components/moment/moment.js') }}"></script>
-    <script src="{{ asset('admin-css/plugins/bower_components/calendar/dist/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('admin-css/plugins/bower_components/calendar/dist/cal-init.js') }}"></script>
-    <script src="{{ asset('admin-css/plugins/bower_components/toast-master/js/jquery.toast.js') }}"></script>
-    <script src="{{ asset('js/jquery.priceformat.min.js') }}"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="{{ asset('admin-css/js/custom.min.js') }}"></script>
-    <script src="{{ asset('admin-css/js/dashboard1.js') }}?time=<?=date('His')?>"></script>
-    <!-- Custom tab JavaScript -->
-    <script src="{{ asset('admin-css/js/cbpFWTabs.js') }}"></script>
-    <script src="{{ asset('js/general.js?v='. date('His')) }}"></script>
-    <script src="{{ asset('js/bootbox.min.js') }}"></script>
-
-    <!-- start - This is for export functionality only -->
-    <script src="{{ asset('admin-css/plugins/bower_components/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-    <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
-
-    
-@if(Auth::user()->is_reset_first_password === null)
-    <div class="modal fade" id="modal_reset_password" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <form>
-                
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel1">Reset Password Anda terlebih dahulu !</h4> 
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">Password:</label>
-                        <input type="password" name="password"class="form-control" placeholder="Password"> 
-                    </div>
-
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">Konfirmasi Password:</label>
-                        <input type="password" name="confirm"class="form-control" placeholder="Konfirmasi Password"> 
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-info" id="submit_password">Submit Password <i class="fa fa-arrow-right"></i></button>
-                </div>
-              </form>
-            </div>
-        </div>
-    </div> 
-
-        <script type="text/javascript">
-
-            $("#submit_password").click(function(){
-
-                var password    = $("input[name='password']").val();
-                var confirm     = $("input[name='confirm']").val();
-
-                if(password == "" || confirm == "")
-                {
-                    bootbox.alert('Password atau Konfirmasi Password harus diisi !');
-                    return false;
-                }
-
-                if(password != confirm)
-                {
-                    bootbox.alert('Password tidak sama');
-                }
-                else
-                {
-                     $.ajax({
-                        type: 'POST',
-                        url: '{{ route('ajax.update-first-password') }}',
-                        data: {'id' : {{ Auth::user()->id }}, 'password' : password, '_token' : $("meta[name='csrf-token']").attr('content')},
-                        dataType: 'json',
-                        success: function (data) {
-                            location.reload();
-                        }
-                    });
-                }
-            });
-
-            $("#modal_reset_password").modal({
-                backdrop: 'static',
-                keyboard: false  // to prevent closing with Esc button (if you want this too)
-            });
-        </script>
-@endif
-
-    <script type="text/javascript">
-        $('#data_table').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-        
-        $(".myadmin-alert .closed").click(function(event) {
-            $(this).parents(".myadmin-alert").fadeToggle(350);
-            return false;
-        });
-
-        $('#data_table2').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-
-        $('#data_table3').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-            ]
-        });
-
-    </script>
-
-    @yield('footer-script')
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    {{ csrf_field() }}
-</form>
+  </div>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+  @include('layouts.footer');
+  <!-- BEGIN VENDOR JS-->
+  <script src="{{ asset('app-assets/vendors/js/vendors.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/tables/datatable/datatables.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/ui/jquery-ui.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/pickers/pickadate/picker.date.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/pickers/daterange/daterangepicker.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/general.js?v='. date('YmdHis')) }}"></script>
+  <script src="{{ asset('app-assets/vendors/js/charts/chart.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/charts/raphael-min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/charts/morris.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js') }}"
+  type="text/javascript"></script>
+  <script src="{{ asset('app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js') }}"
+  type="text/javascript"></script>
+  <script src="{{ asset('app-assets/data/jvector/visitor-data.js') }}" type="text/javascript"></script>
+  <!-- END PAGE VENDOR JS-->
+  <!-- BEGIN MODERN JS-->
+  <script src="{{ asset('app-assets/js/core/app-menu.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/js/core/app.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('app-assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
+  <!-- END MODERN JS-->
+  <!-- BEGIN PAGE LEVEL JS-->
+  <!-- BEGIN PAGE VENDOR JS-->
+  <script src="{{ asset('js/jquery.priceformat.min.js') }}"></script>
+  <!-- END PAGE VENDOR JS-->
+  <script src="{{ asset('js/bootbox.min.js') }}"></script> 
+  <script src="{{ asset('app-assets/js/scripts/tables/datatables/datatable-basic.js') }}?rand={{ date('YmdHis') }}" type="text/javascript"></script>
+  <!-- END PAGE LEVEL JS-->
+  @include('layouts.form-popup-status')
+  @yield('js')
+  @yield('footer-script')
 </body>
 </html>

@@ -39,6 +39,18 @@ class DirectorateController extends Controller
     }
 
     /**
+     * [edit description]
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function edit($id)
+    {
+        $params['data'] = \App\OrganisasiDirectorate::where('id', $id)->first();
+
+        return view('administrator.directorate.edit')->with($params);
+    }
+
+    /**
      * [update description]
      * @param  [type] $id [description]
      * @return [type]     [description]

@@ -1,152 +1,127 @@
 @extends('layouts.karyawan')
 
-@section('title', 'Overtime Sheet - PT. Arthaasia Finance')
+@section('title', 'Overtime Sheet')
 
-@section('sidebar')
-
-@endsection
+@section('page-url', route('karyawan.overtime.index'))
 
 @section('content')
+<form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" action="{{ route('karyawan.overtime.store') }}" method="POST">
+    <div class="col-md-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Form Overtime Sheet</h3>
+            <hr />
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                    </ul>
+                </div>
+            @endif
 
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Form Overtime Sheet</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Overtime Sheet</li>
-                </ol>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- .row -->
-        <div class="row">
-            <form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" action="{{ route('karyawan.overtime.store') }}" method="POST">
-                <div class="col-md-12">
-                    <div class="white-box">
-                        <h3 class="box-title m-b-0">Form Overtime Sheet</h3>
-                        <hr />
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        {{ csrf_field() }}
+            {{ csrf_field() }}
+            <div class="col-md-6 pull-left">
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-6">NIK / Nama Karyawan</label>
+                        <label class="col-md-6">Jabatan</label>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-6">NIK / Nama Karyawan</label>
-                                <label class="col-md-6">Jabatan</label>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" value="{{ Auth::user()->nik .' - '. Auth::user()->name  }}" readonly="true" />
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control jabatan" value="{{ isset(Auth::user()->organisasiposition->name) ? Auth::user()->organisasiposition->name : '' }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">Department</label>
-                                <label class="col-md-6">Job Rule</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control department" value="{{ isset(Auth::user()->department->name) ? Auth::user()->department->name : '' }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control" value="{{ Auth::user()->organisasi_job_role }}" >
-                                </div>
-                            </div>
+                            <input type="text" class="form-control" value="{{ Auth::user()->nik .' - '. Auth::user()->name  }}" readonly="true" />
                         </div>
-
-                        <div class="clearfix"></div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered manage-u-table">
-                                <thead>
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>TANGGAL</th>
-                                        <th>DESCRIPTION</th>
-                                        <th>AWAL</th>
-                                        <th>AKHIR</th>
-                                        <th>TOTAL LEMBUR (JAM)</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-content-lembur">
-                                    <tr>
-                                        <td>1</td>
-                                        <td><input type="text" name="tanggal[]" class="form-control datepicker input"></td>
-                                        <td><input type="text" name="description[]" class="form-control input"></td>
-                                        <td><input type="text" name="awal[]" class="form-control time-picker awal input" /></td>
-                                        <td><input type="text" name="akhir[]" class="form-control time-picker akhir input" /></td>
-                                        <td><input type="text" name="total_lembur[]" class="form-control total_lembur" readonly="true" /></td>
-                                        <td><a class="btn btn-danger btn-xs" onclick="hapus_(this)"><i class="fa fa-trash"></i> hapus</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <a class="btn btn-info btn-xs pull-right" id="add"><i class="fa fa-plus"></i> Tambah</a>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control jabatan" value="{{ isset(Auth::user()->organisasiposition->name) ? Auth::user()->organisasiposition->name : '' }}">
                         </div>
-                        <hr />
-
-                        <h4><b>Approval</b></h4>
-                        <div class="col-md-6" style="border: 1px solid #eee; padding: 15px">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control autcomplete-atasan" placeholder="Select Superior  / Atasan Langsung">
-                                    <input type="hidden" name="atasan_user_id" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">Jabatan</label>
-                                <label class="col-md-6">Division / Departement</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control jabatan_atasan">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control department_atasan">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">No Handphone</label>
-                                <label class="col-md-6">Email</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control no_handphone_atasan">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control email_atasan">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <br />
-                        <a href="{{ route('administrator.overtime.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
-                        <a  class="btn btn-sm btn-success waves-effect waves-light m-r-10" id="btn_submit"><i class="fa fa-save"></i> Ajukan Overtime</a>
-                        <br style="clear: both;" />
-                        <div class="clearfix"></div>
                     </div>
                 </div>
-            </form>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-6">Department</label>
+                        <label class="col-md-6">Job Rule</label>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control department" value="{{ isset(Auth::user()->department->name) ? Auth::user()->department->name : '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control" value="{{ Auth::user()->organisasi_job_role }}" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="table-responsive">
+                <table class="table table-bordered manage-u-table">
+                    <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>TANGGAL</th>
+                            <th>DESCRIPTION</th>
+                            <th>AWAL</th>
+                            <th>AKHIR</th>
+                            <th>TOTAL LEMBUR (JAM)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-content-lembur">
+                        <tr>
+                            <td>1</td>
+                            <td><input type="text" name="tanggal[]" class="form-control datepicker-ui input-overtime"></td>
+                            <td><input type="text" name="description[]" class="form-control input-overtime"></td>
+                            <td><input type="text" name="awal[]" class="form-control time-picker awal input-overtime" /></td>
+                            <td><input type="text" name="akhir[]" class="form-control time-picker akhir input-overtime" /></td>
+                            <td><input type="text" name="total_lembur[]" class="form-control total_lembur" readonly="true" /></td>
+                            <td><a onclick="hapus_(this)"><i class="la la-trash"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-light btn-sm pull-right" id="add"><i class="la la-plus"></i></a>
+            </div>
+            <hr />
+
+            <h4><b>Approval</b></h4>
+            <div class="col-md-6" style="border: 1px solid #eee; padding: 15px">
+                <div class="form-group">
+                    <input type="text" class="form-control autcomplete-atasan" placeholder="Select Superior  / Atasan Langsung">
+                    <input type="hidden" name="atasan_user_id" />
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-6">Jabatan</label>
+                        <label class="col-md-6">Division / Departement</label>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control jabatan_atasan">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control department_atasan">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label class="col-md-6">No Handphone</label>
+                        <label class="col-md-6">Email</label>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control no_handphone_atasan">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" readonly="true" class="form-control email_atasan">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <br />
+            <a href="{{ route('administrator.overtime.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
+            <button type="button" class="btn btn-sm btn-success waves-effect waves-light m-r-10" id="btn_submit"><i class="fa fa-save"></i> Ajukan Overtime</button>
         </div>
-        <!-- /.row -->
-        <!-- ============================================================== -->
     </div>
-    <!-- /.container-fluid -->
-    @extends('layouts.footer')
-</div>
+</form>
+
 @section('footer-script')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<link href="{{ asset('admin-css/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css') }}" rel="stylesheet">
-<script src="{{ asset('admin-css/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.js') }}"></script>
+
+<link href="{{ asset('app-assets/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.css') }}" rel="stylesheet">
+<script src="{{ asset('app-assets/plugins/bower_components/clockpicker/dist/jquery-clockpicker.min.js') }}"></script>
 <script type="text/javascript">
     var list_atasan = [];
 
@@ -215,9 +190,6 @@
 
     hitung_total_lembur();
 
-    jQuery('.datepicker').datepicker({
-        dateFormat: 'yy-mm-dd',
-    });
 
     // Clock pickers
     $('.time-picker').clockpicker({
@@ -256,7 +228,7 @@
 
         var html = '<tr>';
             html += '<td>'+ (no+1) +'</td>';
-            html += '<td><input type="text" name="tanggal[]" class="form-control datepicker input"></td>';
+            html += '<td><input type="text" name="tanggal[]" class="form-control datepicker-ui input"></td>';
             html += '<td><input type="text" name="description[]" class="form-control input"></td>';
             html += '<td><input type="text" name="awal[]" class="form-control time-picker awal input" /></td>';
             html += '<td><input type="text" name="akhir[]" class="form-control time-picker akhir input" /></td>';
@@ -273,7 +245,7 @@
             'default': 'now'
         });
 
-        jQuery('.datepicker').datepicker({
+        jQuery('.datepicker-ui').datepicker({
             dateFormat: 'yy-mm-dd',
             beforeShowDay: function(date){
                 var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
@@ -326,7 +298,7 @@
     function cek_form()
     {
         validate_form = true;
-        $(".input").each(function(){
+        $(".input-overtime").each(function(){
             if($(this).val() == "")
             {
                 validate_form = false;
@@ -336,7 +308,7 @@
 
     function input_change_form()
     {
-        $(".input").each(function(){
+        $(".input-overtime").each(function(){
             $(this).on('change', function(){
                 validate_button_tambah();
             });
@@ -350,7 +322,7 @@
     {
         $("#add").show();
 
-        $(".input").each(function(){
+        $(".input-overtime").each(function(){
             if($(this).val() == "")
             {
                 $("#add").hide();

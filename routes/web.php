@@ -29,6 +29,17 @@ Route::get('/', function ()
     return redirect('login');
 });
 
+
+Route::get('sendemail', function(){
+
+	return view('email.general');
+
+		$objDemo = new \stdClass();
+        $objDemo->content = 'Demo One Value';
+ 
+        \Mail::to("doni.enginer@gmail.com")->send(new \App\Mail\GeneralMail($objDemo));
+	});
+
 Auth::routes();
 
 // ROUTING LOGIN
@@ -312,4 +323,17 @@ Route::group(['prefix' => 'administrator', 'middleware' => ['auth', 'access:1']]
 	Route::post('karyawan/change-status-karyawan', $path .'KaryawanController@changeStatusKaryawan')->name('administrator.karyawan.change-status-karyawan');
 	Route::post('karyawan/change-password-karyawan', $path .'KaryawanController@changePasswordKaryawan')->name('administrator.karyawan.change-password-karyawan');
 	Route::get('karyawan/autologin/{id}', $path .'KaryawanController@autologin')->name('administrator.karyawan.autologin');
+	Route::get('directorate/delete/{id}', $path . 'DirectorateController@delete')->name('administrator.directorate.delete');
+	Route::get('division/delete/{id}', $path . 'DivisionController@destroy')->name('administrator.division.delete');
+	Route::get('department/delete/{id}', $path . 'DepartmentController@destroy')->name('administrator.department.delete');
+	Route::get('position/delete/{id}', $path . 'PositionController@destroy')->name('administrator.position.delete');
+	Route::get('cabang/delete/{id}', $path . 'CabangController@destroy')->name('administrator.cabang.delete');
+	Route::get('bank/delete/{id}', $path . 'BankController@destroy')->name('administrator.bank.delete');
+	Route::get('alasan-pengunduran-diri/delete/{id}', $path . 'AlasanPengunduranDiriSettingController@destroy')->name('administrator.alasan-pengunduran-diri.delete');
+	Route::get('cuti-bersama/delete/{id}', $path . 'CutiBersamaController@destroy')->name('administrator.cuti-bersama.delete');
+	Route::get('libur-nasional/delete/{id}', $path . 'LiburNasionalController@destroy')->name('administrator.libur-nasional.delete');
+	Route::get('plafond-dinas/delete/{id}', $path . 'PlafondDinasController@destroy')->name('administrator.plafond-dinas.delete');
+	Route::get('universitas/delete/{id}', $path . 'UniversitasController@destroy')->name('administrator.universitas.delete');
+	Route::get('program-studi/delete/{id}', $path . 'ProgramStudiController@destroy')->name('administrator.program-studi.delete');
+	Route::get('setting-cuti/delete/{id}', $path . 'SettingCutiController@destroy')->name('administrator.setting-cuti.delete');
 });

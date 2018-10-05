@@ -146,4 +146,17 @@ class PlafondDinasController extends Controller
 
         return redirect()->route('administrator.plafond-dinas.index')->with('message-success', 'Data berhasil disimpan');
     }
+
+     /**
+     * [desctroy description]
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
+    public function destroy($id)
+    {
+        $data = \App\PlafondDinas::where('id', $id)->first();
+        $data->delete();
+
+        return redirect()->route('administrator.position.index')->with('message-success', 'Data delet   ed');
+    }
 }

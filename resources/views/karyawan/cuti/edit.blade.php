@@ -1,180 +1,157 @@
 @extends('layouts.karyawan')
 
-@section('title', 'Cuti Karyawan - PT. Arthaasia Finance')
+@section('title', 'Leave Employee')
 
-@section('sidebar')
-
-@endsection
+@section('page-url', route('karyawan.cuti.index'))
 
 @section('content')
-
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Form Cuti Karyawan</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Cuti Karyawan</li>
-                </ol>
+<form class="form-horizontal" id="form-cuti" onsubmit="return false;" enctype="multipart/form-data" method="POST">
+    <h3 class="box-title m-b-0">Leave Employee Form</h3>
+        <hr />
+        <br />
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
             </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- .row -->
-        <div class="row">
-            <form class="form-horizontal" id="form-cuti" onsubmit="return false;" enctype="multipart/form-data" method="POST">
-                <div class="col-md-12">
-                    <div class="white-box">
-                        <h3 class="box-title m-b-0">Form Cuti</h3>
-                        <hr />
-                        <br />
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                                </ul>
-                            </div>
-                        @endif
+        @endif
 
-                        {{ csrf_field() }}
-                        
-                        <div class="col-md-6" style="padding-left: 0;">
-                            <div class="form-group">
-                                <label class="col-md-6">NIK / Nama Karyawan</label>
-                                <label class="col-md-6">Telepon</label>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" value="{{ Auth::user()->nik .' / '. Auth::user()->name }}" readonly="true">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" value="{{ Auth::user()->telepon }}" readonly="true" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">Jabatan</label>
-                                <label class="col-md-6">Division / Departement</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control jabatan" value="{{ Auth::user()->organisasi_job_role }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control department" value="{{ isset(Auth::user()->department) ? Auth::user()->department->name : '' }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Jenis Cuti</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" name="jenis_cuti" readonly>
-                                        <option value="">Pilih Jenis Cuti</option>
-                                        <?php 
-                                            $kuota = 0; 
-                                            $cuti_terpakai = 0;
-                                        ?>
-                                        @foreach(list_user_cuti() as $item)
-                                        <?php 
-                                            if($data->jenis_cuti == $item->id)
-                                            {
-                                                $kuota = $item->kuota;
-                                                $cuti_terpakai = get_cuti_terpakai($item->id, \Auth::user()->id);
-                                            }   
-                                        ?>
-                                        <option value="{{ $item->id }}" {{ $data->jenis_cuti == $item->id ? 'selected' : '' }} data-kuota="{{ $item->kuota }}" data-cutiterpakai="{{ get_cuti_terpakai($item->id, \Auth::user()->id) }}">{{ $item->jenis_cuti }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6" id="section_jenis_izin" style="display: none;">
-                                    <input type="text" class="form-control" name="jenis_izin" placeholder="Jenis Izin" />
-                                </div>
-                            </div>
-                            <div class="form-group"> 
-                                <label class="col-md-4">Kuota Cuti / Ijin</label>
-                                <label class="col-md-3">Cuti Terpakai</label>
-                                <label class="col-md-3">Sisa Cuti</label>
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control kuota_cuti"  value="{{ get_cuti_user($data->jenis_cuti, \Auth::user()->id, 'kuota') }}" readonly="true" />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" class="form-control cuti_terpakai" readonly="true" value="{{ get_cuti_user($data->jenis_cuti, \Auth::user()->id, 'cuti_terpakai') }}"  />
-                                </div>
-                                <div class="col-md-3">
-                                    <input type="text" readonly="true" class="form-control sisa_cuti" value="{{ get_cuti_user($data->jenis_cuti, \Auth::user()->id, 'sisa_cuti') }}">
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="btn btn-info btn-sm" id="history_cuti"><i class="fa fa-history"></i> History</label>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <br />
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-12">Tanggal Cuti</label>
-                                <div class="col-md-5">
-                                    <input type="text" name="tanggal_cuti_start" readonly="true" value="{{ $data->tanggal_cuti_end }}" class="form-control datepicker" placeholder="Start Tanggal" />
-                                </div>
-                                <div class="col-md-5">
-                                    <input type="text" name="tanggal_cuti_end"  readonly="true" value="{{ $data->tanggal_cuti_end }}" class="form-control datepicker" placeholder="End Tanggal">
-                                </div>
-                                <div class="col-md-2">
-                                    <h3 class="btn btn-info total_hari_cuti" style="margin-top:0;">{{ $data->total_cuti }} Hari</h3>
-                                    <h3 class="btn btn-warning btn_hari_libur" style="margin-top:0;">Hari Libur</h3>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-12">Keperluan</label>
-                                <div class="col-md-12">
-                                    <textarea class="form-control" name="keperluan" readonly="true">{{ $data->keperluan }}</textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Selama Cuti, Backup dan Informasi pekerjaan diberikan kepada</label>
-                                <div class="col-md-12">
-                                    <input type="text" readonly="true" class="form-control" value="{{  $data->backup_karyawan->nik }} / {{  $data->backup_karyawan->name }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">Jabatan</label>
-                                <label class="col-md-6">Division / Departement</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control jabatan_backup" value="{{ $data->backup_karyawan->organisasi_job_role }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control department_backup" value="{{ isset($data->backup_karyawan->department->name) ? $data->backup_karyawan->department->name : ''  }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">No Handphone</label>
-                                <label class="col-md-6">Email</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control no_handphone" value="{{ $data->backup_karyawan->telepon }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control email" value="{{ $data->backup_karyawan->email }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <a href="{{ route('karyawan.cuti.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Back</a>
-                            <br style="clear: both;" />
-                        </div>
-                        <div class="clearfix"></div>
+        {{ csrf_field() }}
+        
+        <div class="col-md-6 pull-left" style="padding-left: 0;">
+            <div class="form-group">
+                <div class="row">
+                    <p class="col-md-6">NIK / Nama Karyawan</p>
+                    <p class="col-md-6">Telepon</p>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" value="{{ Auth::user()->nik .' / '. Auth::user()->name }}" readonly="true">
                     </div>
-                </div>    
-            </form>                    
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" value="{{ Auth::user()->telepon }}" readonly="true" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <p class="col-md-6">Jabatan</p>
+                    <p class="col-md-6">Division / Departement</p>
+                    <div class="col-md-6">
+                        <input type="text" readonly="true" class="form-control jabatan" value="{{ Auth::user()->organisasi_job_role }}">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" readonly="true" class="form-control department" value="{{ isset(Auth::user()->department) ? Auth::user()->department->name : '' }}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <p class="col-md-12">Jenis Cuti</p>
+                    <div class="col-md-6">
+                        <select class="form-control" name="jenis_cuti" readonly>
+                            <option value="">Pilih Jenis Cuti</option>
+                            <?php 
+                                $kuota = 0; 
+                                $cuti_terpakai = 0;
+                            ?>
+                            @foreach(list_user_cuti() as $item)
+                            <?php 
+                                if($data->jenis_cuti == $item->id)
+                                {
+                                    $kuota = $item->kuota;
+                                    $cuti_terpakai = get_cuti_terpakai($item->id, \Auth::user()->id);
+                                }   
+                            ?>
+                            <option value="{{ $item->id }}" {{ $data->jenis_cuti == $item->id ? 'selected' : '' }} data-kuota="{{ $item->kuota }}" data-cutiterpakai="{{ get_cuti_terpakai($item->id, \Auth::user()->id) }}">{{ $item->jenis_cuti }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6" id="section_jenis_izin" style="display: none;">
+                        <input type="text" class="form-control" name="jenis_izin" placeholder="Jenis Izin" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group"> 
+                <div class="row">
+                    <p class="col-md-4">Kuota Cuti / Ijin</p>
+                    <p class="col-md-3">Cuti Terpakai</p>
+                    <p class="col-md-3">Sisa Cuti</p>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control kuota_cuti"  value="{{ get_cuti_user($data->jenis_cuti, \Auth::user()->id, 'kuota') }}" readonly="true" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control cuti_terpakai" readonly="true" value="{{ get_cuti_user($data->jenis_cuti, \Auth::user()->id, 'cuti_terpakai') }}"  />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" readonly="true" class="form-control sisa_cuti" value="{{ get_cuti_user($data->jenis_cuti, \Auth::user()->id, 'sisa_cuti') }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="btn btn-info btn-sm" id="history_cuti"><i class="fa fa-history"></i> History</label>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>    
+            <br />
         </div>
-        <!-- /.row -->
-        <!-- ============================================================== -->
-    </div>
-    <!-- /.container-fluid -->
-    @extends('layouts.footer')
-</div>
+        <div class="col-md-6 pull-left" style="padding-left: 0;">
+            <div class="form-group">
+                <div class="row">
+                    <p class="col-md-12">Tanggal Cuti ( {{ $data->total_cuti }} Hari )</p>
+                    <div class="col-md-5">
+                        <input type="text" name="tanggal_cuti_start" readonly="true" value="{{ $data->tanggal_cuti_end }}" class="form-control datepicker" placeholder="Start Tanggal" />
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" name="tanggal_cuti_end"  readonly="true" value="{{ $data->tanggal_cuti_end }}" class="form-control datepicker" placeholder="End Tanggal">
+                    </div>
+                    <div class="col-md-2">
+                        <h3 class="btn btn-warning btn_hari_libur btn-sm" style="margin-top:0;">Hari Libur</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <p>Keperluan</p>
+                <textarea class="form-control" name="keperluan" readonly="true">{{ $data->keperluan }}</textarea>
+            </div>
+            <div class="form-group">
+                <p>Selama Cuti, Backup dan Informasi pekerjaan diberikan kepada</p>
+                <input type="text" readonly="true" class="form-control" value="{{  $data->backup_karyawan->nik }} / {{  $data->backup_karyawan->name }}">
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <p class="col-md-6">Jabatan</p>
+                    <p class="col-md-6">Division / Departement</p>
+                    <div class="col-md-6">
+                        <input type="text" readonly="true" class="form-control jabatan_backup" value="{{ $data->backup_karyawan->organisasi_job_role }}">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" readonly="true" class="form-control department_backup" value="{{ isset($data->backup_karyawan->department->name) ? $data->backup_karyawan->department->name : ''  }}">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <p class="col-md-6">No Handphone</p>
+                    <p class="col-md-6">Email</p>
+                    <div class="col-md-6">
+                        <input type="text" readonly="true" class="form-control no_handphone" value="{{ $data->backup_karyawan->telepon }}">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" readonly="true" class="form-control email" value="{{ $data->backup_karyawan->email }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <a href="{{ route('karyawan.cuti.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Back</a>
+            <br style="clear: both;" />
+        </div>
+        <div class="clearfix"></div>
+    </div> 
+</form>  
 
 <!-- sample modal content -->
 <div id="modal_history_cuti" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

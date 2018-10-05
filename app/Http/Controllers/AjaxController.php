@@ -438,14 +438,10 @@ class AjaxController extends Controller
         if($request->ajax())
         {
             $data = \App\CutiKaryawan::where('id', $request->foreign_id)->first();
-
-            $atasan = \App\User::where('id', $data->approved_atasan_id)->first();
             
-            $data->atasan = "";
-
-            if(isset($atasan->name))
+            if(isset($data->atasan->name))
             {
-                $data->atasan = $atasan->name .' / '. (isset($atasan->organisasiposition->name) ? $atasan->organisasiposition->name : '');
+                $data->atasan->atasan = $data->atasan->name .' / '. (isset($data->atasan->organisasiposition->name) ? $data->atasan->organisasiposition->name : '');
             }
 
             return response()->json(['message' => 'success', 'data' => $data]);

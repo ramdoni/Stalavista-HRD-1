@@ -74,7 +74,7 @@ class PositionController extends Controller
         $data = \App\OrganisasiPosition::where('id', $id)->first();
         $data->delete();
 
-        return redirect()->route('administrator.position.index')->with('message-sucess', 'Data berhasi di hapus');
+        return redirect()->route('administrator.position.index')->with('message-success', 'Data berhasi di hapus');
     } 
 
     /**

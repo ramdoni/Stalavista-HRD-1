@@ -1289,34 +1289,6 @@ function list_exit_clearance_document()
 }
 
 /**
- * [status_exit_interview description]
- * @param  [type] $status [description]
- * @return [type]         [description]
- */
-function status_exit_interview($status)
-{
-	$html = '';
-	switch ($status) {
-		case 1:
-			$html = '<label class="btn btn-warning btn-xs">Waiting Approval</label>';
-			break;
-		case 2:
-			$html = '<label class="btn btn-success btn-xs"><i class="fa fa-chceck"></i>Disetujui</label>';
-		break;
-		case 3:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Ditolak</label>';
-		break;
-		case 4:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Dibatalkan</label>';
-		break;
-		default:
-			break;
-	}
-
-	return $html;
-}
-
-/**
  * [get_reason_interview description]
  * @return [type] [description]
  */
@@ -1344,35 +1316,6 @@ function get_lembur_detail($id)
 	$data = \App\OvertimeSheetForm::where('overtime_sheet_id', $id)->get();
 
 	return $data;
-}
-
-/**
- * [status_overtime description]
- * @param  [type] $status [description]
- * @return [type]         [description]
- */
-function status_overtime($status)
-{
-	$html = '';
-	switch ($status) {
-		case 1:
-			$html = '<label class="btn btn-warning btn-xs">Waiting Approval</label>';
-			break;
-		case 2:
-			$html = '<label class="btn btn-success btn-xs"><i class="fa fa-chceck"></i>Disetujui</label>';
-		break;
-		case 3:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Ditolak</label>';
-		break;
-		case 4:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Dibatalkan</label>';
-		break;
-		
-		default:
-			break;
-	}
-
-	return $html;
 }
 
 /**
@@ -1464,62 +1407,6 @@ function get_universitas()
 }
 
 /**
- * [status_medical description]
- * @param  [type] $status [description]
- * @return [type]         [description]
- */
-function status_medical($status)
-{
-	$html = '';
-	switch ($status) {
-		case 1:
-			$html = '<label class="btn btn-warning btn-xs">Waiting Approval</label>';
-			break;
-		case 2:
-			$html = '<label class="btn btn-success btn-xs"><i class="fa fa-chceck"></i>Disetujui</label>';
-		break;
-		case 3:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Ditolak</label>';
-		break;
-		case 4:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Dibatalkan</label>';
-		break;
-		default:
-			break;
-	}
-
-	return $html;
-}
-
-/**
- * [status_payment_request description]
- * @param  [type] $status [description]
- * @return [type]         [description]
- */
-function status_payment_request($status)
-{
-	$html = '';
-	switch ($status) {
-		case 1:
-			$html = '<label class="btn btn-warning btn-xs">Waiting Approval</label>';
-			break;
-		case 2:
-			$html = '<label class="btn btn-success btn-xs"><i class="fa fa-chceck"></i>Disetujui</label>';
-		break;
-		case 3:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Ditolak</label>';
-		break;
-		case 4:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Dibatalkan</label>';
-		break;
-		default:
-			break;
-	}
-
-	return $html;
-}
-
-/**
  * [lama_hari description]
  * @param  [type] $start [description]
  * @param  [type] $end   [description]
@@ -1538,34 +1425,6 @@ function lama_hari($start, $end)
 
 	return "$hari "; // hasil : 217 hari
 
-}
-
-/**
- * [status_cuti description]
- * @param  [type] $status [description]
- * @return [type]         [description]
- */
-function status_cuti($status)
-{
-	$html = '';
-	switch ($status) {
-		case 1:
-			$html = '<label class="btn btn-warning btn-xs">Waiting Approval</label>';
-			break;
-		case 2:
-			$html = '<label class="btn btn-success btn-xs"><i class="fa fa-chceck"></i>Disetujui</label>';
-		break;
-		case 3:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Ditolak</label>';
-		break;
-		case 4:
-			$html = '<label class="btn btn-danger btn-xs"><i class="fa fa-close"></i>Dibatalkan</label>';
-		break;
-		default:
-			break;
-	}
-
-	return $html;
 }
 
 

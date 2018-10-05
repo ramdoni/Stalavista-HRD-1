@@ -1,174 +1,139 @@
-@extends('layouts.administrator')
+@extends('layouts.karyawan')
 
-@section('title', 'Medical Reimbursement - PT. Arthaasia Finance')
+@section('title', 'Medical Reimbursement')
 
-@section('sidebar')
-
-@endsection
+@section('page-url', route('karyawan.medical.index'))
 
 @section('content')
+<form enctype="multipart/form-data" action="{{ route('karyawan.medical.store') }}" id="form-medical" method="POST"  autocomplete="off">
 
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Form Medical Reimbursement</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Medical Reimbursement</li>
-                </ol>
-            </div>
-            <!-- /.col-lg-12 -->
+    <h3 class="box-title m-b-0">Form Medical Reimbursement</h3>
+    <br />
+    @if (count($errors) > 0)
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            </ul>
         </div>
-        <!-- .row -->
-        <div class="row">
-            <form class="form-horizontal" enctype="multipart/form-data" action="{{ route('karyawan.medical.store') }}" id="form-medical" method="POST"  autocomplete="off">
-                <div class="col-md-12">
-                    <div class="white-box">
-                        <h3 class="box-title m-b-0">Form Medical Reimbursement</h3>
-                        <hr />
-                        <br />
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        {{ csrf_field() }}
-                        <div class="col-md-6" style="padding-left: 0;">
-                            <div class="form-group">
-                                <label class="col-md-12">NIK / Nama Karyawan</label>
-                                <div class="col-md-12">
-                                    <input type="text" readonly="" class="form-control" value="{{ Auth::user()->nik .' - '. Auth::user()->name }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">Jabatan</label>
-                                <label class="col-md-6">Division / Departement</label>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control jabatan" value="{{ Auth::user()->organisasi_job_role }}">
-                                </div>
-                                <div class="col-md-6">
-                                    <input type="text" readonly="true" class="form-control department" value="{{ isset(Auth::user()->department->name) ? Auth::user()->department->name : '' }}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Tanggal Pengajuan</label>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control" readonly="true" name="tanggal_pengajuan" value="{{ date('Y-m-d') }}" required />
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <br />
-                        </div>
-                        <div class="col-md-6">
-                            <br />
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <td>Rawat Jalan</td>
-                                        <td>Kuitansi Asli/Struk, Diagnosa, Copy Resep, Copy, Hasil scan (jika ada), kode Gigi (jika klaim gigi)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rawat Inap</td>
-                                        <td>Kuitansi asli, Diagnosa, Copy Resep, Copy hasil scan (jika ada)</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Melahirkan</td>
-                                        <td>Kuitansi Asli, Surat Keterangan Lahir</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Kacamata</td>
-                                        <td>Kuitansi Asli, Pemerikasaan Dokter Mata (untuk permata kali)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div>
-                          <table class="table table-hover">
-                              <thead>
-                                  <tr>
-                                      <th>NO</th>
-                                      <th>TANGGAL KWITANSI</th>
-                                      <th>HUBUNGAN</th>
-                                      <th>NAMA PASIEN</th>
-                                      <th>JENIS KLAIM</th>
-                                      <th>FILE BUKTI TRANSAKSI</th>
-                                      <th>JUMLAH</th>
-                                      <th></th>
-                                  </tr>
-                              </thead>
-                              <tbody class="table-claim">
-                                <tr class="oninput">
-                                    <td>1</td>
-                                    <td><input type="text" class="form-control datepicker input" required name="tanggal_kwitansi[]"  /></td>
-                                    <td>
-                                        <select name="user_family_id[]" class="form-control input" onchange="select_hubungan(this)" required>
-                                            <option value="">Pilih Hubungan</option>
-                                            <option value="{{ \Auth::user()->id }}" data-nama="{{ \Auth::user()->name }}">Saya Sendiri</option>
-                                            @foreach(Auth::user()->userFamily as $item)
-                                            <option value="{{ $item->id }}" data-nama="{{ $item->nama }}">{{ $item->hubungan }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td><input type="text" readonly="true" class="form-control nama_hubungan" /></td>
-                                    <td>
-                                        <select name="jenis_klaim[]" class="form-control input" required>
-                                            <option value="">Pilih Jenis Klaim</option>
-                                            @foreach(jenis_claim_medical() as $k => $i)
-                                            <option value="{{ $k }}">{{ $i }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td><input type="file" class="form-control input" name="file_bukti_transaksi[]" required /></td>
-                                    <td><input type="text" class="form-control input price_format" name="jumlah[]" required /></td>
-                                </tr>
-                              </tbody>
-                              <tfoot>
-                                  <tr>
-                                      <th colspan="6" style="text-align: right;">TOTAL : </th>
-                                      <th class="th-total"></th>
-                                  </tr>
-                              </tfoot>
-                          </table>
-                          <span class="btn btn-info btn-xs pull-right" id="add">Tambah</span>
-                        </div>
-                        <div class="clearfix"></div>
-                        <br />
-                        <hr />
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <a href="{{ route('administrator.overtime.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
-                                <a class="btn btn-sm btn-success waves-effect waves-light m-r-10" id="btn_submit"><i class="fa fa-save"></i> Submit Medical Reimbursement</a>
-                                <br style="clear: both;" />
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
+    @endif
+    {{ csrf_field() }}
+    <div class="col-md-6 pull-left" style="padding-left: 0;">
+        <div class="form-group">
+            <p>NIK / Nama Karyawan</p>
+            <input type="text" readonly="" class="form-control" value="{{ Auth::user()->nik .' - '. Auth::user()->name }}">
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <p class="col-md-6">Jabatan</p>
+                <p class="col-md-6">Division / Departement</p>
+                <div class="col-md-6">
+                    <input type="text" readonly="true" class="form-control jabatan" value="{{ Auth::user()->organisasi_job_role }}">
                 </div>
-            </form>
+                <div class="col-md-6">
+                    <input type="text" readonly="true" class="form-control department" value="{{ isset(Auth::user()->department->name) ? Auth::user()->department->name : '' }}">
+                </div>
+            </div>
         </div>
-        <!-- /.row -->
-        <!-- ============================================================== -->
+        <div class="form-group">
+            <div class="row">
+                <p class="col-md-12">Tanggal Pengajuan</p>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" readonly="true" name="tanggal_pengajuan" value="{{ date('Y-m-d') }}" required />
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <br />
     </div>
-    <!-- /.container-fluid -->
-    @extends('layouts.footer')
-</div>
+    <div class="col-md-6 pull-left" style="padding-left:0;">
+        <br />
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>Rawat Jalan</td>
+                    <td>Kuitansi Asli/Struk, Diagnosa, Copy Resep, Copy, Hasil scan (jika ada), kode Gigi (jika klaim gigi)</td>
+                </tr>
+                <tr>
+                    <td>Rawat Inap</td>
+                    <td>Kuitansi asli, Diagnosa, Copy Resep, Copy hasil scan (jika ada)</td>
+                </tr>
+                <tr>
+                    <td>Melahirkan</td>
+                    <td>Kuitansi Asli, Surat Keterangan Lahir</td>
+                </tr>
+                <tr>
+                    <td>Kacamata</td>
+                    <td>Kuitansi Asli, Pemerikasaan Dokter Mata (untuk permata kali)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="clearfix"></div>
+    <div>
+      <table class="table table-hover">
+          <thead>
+              <tr>
+                  <th>NO</th>
+                  <th>TANGGAL KWITANSI</th>
+                  <th>HUBUNGAN</th>
+                  <th>NAMA PASIEN</th>
+                  <th>JENIS KLAIM</th>
+                  <th>FILE BUKTI TRANSAKSI</th>
+                  <th>JUMLAH</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody class="table-claim">
+            <tr class="oninput">
+                <td>1</td>
+                <td><input type="text" class="form-control datepicker-ui input-medical" required name="tanggal_kwitansi[]"  /></td>
+                <td>
+                    <select name="user_family_id[]" class="form-control input-medical" onchange="select_hubungan(this)" required>
+                        <option value="">Pilih Hubungan</option>
+                        <option value="{{ \Auth::user()->id }}" data-nama="{{ \Auth::user()->name }}">Saya Sendiri</option>
+                        @foreach(Auth::user()->userFamily as $item)
+                        <option value="{{ $item->id }}" data-nama="{{ $item->nama }}">{{ $item->hubungan }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td><input type="text" readonly="true" class="form-control nama_hubungan" /></td>
+                <td>
+                    <select name="jenis_klaim[]" class="form-control input" required>
+                        <option value="">Pilih Jenis Klaim</option>
+                        @foreach(jenis_claim_medical() as $k => $i)
+                        <option value="{{ $k }}">{{ $i }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                <td><input type="file" class="form-control input-medical" name="file_bukti_transaksi[]" required /></td>
+                <td><input type="text" class="form-control input-medical price_format" name="jumlah[]" required /></td>
+            </tr>
+          </tbody>
+          <tfoot>
+              <tr>
+                  <th colspan="6" style="text-align: right;">TOTAL : </th>
+                  <th class="th-total"></th>
+              </tr>
+          </tfoot>
+      </table>
+      <span class="btn btn-light btn-sm pull-right" id="add"><i class="la la-plus"></i></span>
+    </div>
+    <div class="clearfix"></div>
+    <br />
+    <hr />
+    <div class="form-group">
+        <div class="col-md-12">
+            <a href="{{ route('administrator.overtime.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
+            <button type="button" class="btn btn-sm btn-success waves-effect waves-light m-r-10" id="btn_submit"><i class="fa fa-save"></i> Submit Medical Reimbursement</button>
+            <br style="clear: both;" />
+        </div>
+    </div>
+</form>
 @section('footer-script')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
-
     var list_atasan = [];
 
     @foreach(get_atasan_langsung() as $item)
@@ -208,10 +173,6 @@
             $(this).autocomplete("search", "");
     });
 
-    jQuery('.datepicker').datepicker({
-        dateFormat: 'yy-mm-dd',
-    });
-
     var data_dependent = [];
 
     $("#btn_submit").click(function(){
@@ -247,28 +208,26 @@
 
         var html =  '<tr class="oninput">'+
                         '<td>'+(no+1)+'</td>'+
-                        '<td><input type="text" class="form-control datepicker input" required name="tanggal_kwitansi[]" /></td>'+
+                        '<td><input type="text" class="form-control datepicker input-medical" required name="tanggal_kwitansi[]" /></td>'+
                         '<td>'+
-                            '<select name="user_family_id[]" class="form-control input" onchange="select_hubungan(this)" required>'+
+                            '<select name="user_family_id[]" class="form-control input-medical" onchange="select_hubungan(this)" required>'+
                                 '<option value="">Pilih Hubungan</option><option value="{{ \Auth::user()->id }}" data-nama="{{ \Auth::user()->name }}">Saya Sendiri</option>@foreach(Auth::user()->userFamily as $item)<option value="{{ $item->id }}" data-nama="{{ $item->nama }}">{{ $item->hubungan }}</option>@endforeach'+
                             '</select>'+
                         '</td>'+
                         '<td><input type="text" readonly="true" class="form-control nama_hubungan" /></td>'+
                         '<td>'+
-                            '<select name="jenis_klaim[]" class="form-control input" required>'+
+                            '<select name="jenis_klaim[]" class="form-control input-medical" required>'+
                                 '<option value="">Pilih Jenis Klaim</option>@foreach(jenis_claim_medical() as $k => $i)<option value="{{ $k }}">{{ $i }}</option>@endforeach'+
                             '</select>'+
                         '</td>'+
-                        '<td><input type="file" class="form-control input" name="file_bukti_transaksi[]" required /></td>'+
-                        '<td><input type="text" class="form-control input price_format" name="jumlah[]" required /></td>'+
+                        '<td><input type="file" class="form-control input-medical" name="file_bukti_transaksi[]" required /></td>'+
+                        '<td><input type="text" class="form-control input-medical price_format" name="jumlah[]" required /></td>'+
                         '<td><a class="btn btn-danger btn-xs" onclick="hapus_item(this)"><i class="fa fa-trash"></i></a></td>'+
                         '</tr>';
 
         $('.table-claim').append(html);
 
-        jQuery('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd',
-        });
+        init_datepicker();
 
         cek_button_add();
         show_hide_add();
@@ -279,7 +238,7 @@ function show_hide_add()
 {
     $("#add").show();
     validate_form = true;
-    $('.oninput .input').each(function(){
+    $('.oninput .input-medical').each(function(){
 
         if($(this).val() == "")
         {

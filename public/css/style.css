@@ -1,0 +1,12 @@
+.bg-info {
+  background: #4c3c84 !important;
+}
+.btn-info {
+  background: #f8993e !important;
+  border: 1px solid #f8993e !important; 
+}
+.btn-info:hover,.btn-info:focus {
+  background: transparent !important;
+  border: 1px solid #f8993e !important; 
+  color: #f8993e !important;
+}

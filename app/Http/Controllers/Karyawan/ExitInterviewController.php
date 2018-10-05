@@ -147,8 +147,6 @@ class ExitInterviewController extends Controller
         $data->inventory_it_username_pc   = $request->inventory_it_username_pc;
         $data->inventory_it_password_pc   = $request->inventory_it_password_pc;
         $data->inventory_it_email         = $request->inventory_it_email;
-        $data->inventory_it_username_arium= $request->inventory_it_username_arium;
-        $data->inventory_it_password_arium= $request->inventory_it_password_arium;
         $data->save();
 
         // DOCUMENT LIST

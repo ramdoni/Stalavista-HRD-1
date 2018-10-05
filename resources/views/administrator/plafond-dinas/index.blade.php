@@ -1,131 +1,103 @@
 @extends('layouts.administrator')
 
-@section('title', 'Plafond Dinas - PT. Arthaasia Finance')
+@section('title', 'Training & Business Trip')
 
 @section('sidebar')
 
 @endsection
 
+@section('page-title', 'Training & Business Trip')
+
+@section('page-url', route('administrator.plafond-dinas.index'))
+
+@section('page-create', route('administrator.plafond-dinas.create'))
+
+@section('custom-button')   
+    <buttonv class="btn btn-info round  box-shadow-2 px-2" id="add-import-karyawan"> <i class="la la-upload"></i> Import</button>    
+@endsection
+
 @section('content')
-
-  
-        
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Dashboard</h4> 
-            </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                <a href="{{ route('administrator.plafond-dinas.create') }}" class="btn btn-success btn-sm pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light"> <i class="fa fa-plus"></i> TAMBAH PLAFOND DINAS</a>
-                
-                <a class="btn btn-info btn-sm pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light" id="add-import-karyawan"> <i class="fa fa-upload"></i> IMPORT</a>
-
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Plafond Dinas</li>
-                </ol>
-            </div>
-            <!-- /.col-lg-12 -->
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" aria-controls="domestik" aria-expanded="true" href="#domestik"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs"> Domestik</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" aria-controls="luarnegeri" aria-expanded="false" href="#luarnegeri"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs"> Luar Negeri</span></a>
+    </li>
+</ul>
+<div class="tab-content"    >
+    <div role="tabpanel" class="tab-pane active" id="domestik">
+        <br />
+        <h4 class="card-title">Manage Plafond Dinas Domestik</h4>
+        <hr />
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered data-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th width="70" class="text-center">#</th>
+                        <th>LEVEL</th>
+                        <th>HOTEL (RP)</th>
+                        <th>TUNJANGAN MAKAN/HARI (RP)</th>
+                        <th>TUNJANGAN HARIAN/UANG SAKU (RP / HARI)</th>
+                        <th>KETERANGAN</th>
+                        <th>MANAGE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data as $no => $item)
+                    <tr>
+                        <td>{{ $no+1 }}</td>
+                        <td>{{ ucfirst( strtolower($item->organisasi_position_text)) }}</td>
+                        <td>{{ number_format($item->hotel) }}</td>
+                        <td>{{ number_format($item->tunjangan_makanan) }}</td>
+                        <td>{{ number_format($item->tunjangan_harian) }}</td>
+                        <td>{{ $item->keterangan }}</td>
+                        <td>
+                            <a href="{{ route('administrator.plafond-dinas.edit', ['id' => $item->id]) }}"><i class="la la-edit"></i></a>
+                            <a href="{{ route('administrator.plafond-dinas.delete', ['id' => $item->id]) }}"><i class="la la-trash"></i></a>
+                        </td>
+                    </tr>
+                    @endforeach 
+                </tbody>
+            </table>
         </div>
-
-        <!-- .row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-
-                     <ul class="nav customtab nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#domestik" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs"> Domestik</span></a></li>
-                        <li role="presentation" class=""><a href="#luarnegeri" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs"> Luar Negeri</span></a></li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade active in" id="domestik">
-                            <h3 class="box-title m-b-0">Manage Plafond Dinas Domestik</h3>
-                            <br />
-                            <div class="table-responsive">
-                                <table id="data_table" class="display nowrap" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th width="70" class="text-center">#</th>
-                                            <th>LEVEL</th>
-                                            <th>HOTEL (RP)</th>
-                                            <th>TUNJANGAN MAKAN/HARI (RP)</th>
-                                            <th>TUNJANGAN HARIAN/UANG SAKU (RP / HARI)</th>
-                                            <th>KETERANGAN</th>
-                                            <th>#</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($data as $no => $item)
-                                        <tr>
-                                            <td>{{ $no+1 }}</td>
-                                            <td>{{ ucfirst( strtolower($item->organisasi_position_text)) }}</td>
-                                            <td>{{ number_format($item->hotel) }}</td>
-                                            <td>{{ number_format($item->tunjangan_makanan) }}</td>
-                                            <td>{{ number_format($item->tunjangan_harian) }}</td>
-                                            <td>{{ $item->keterangan }}</td>
-                                            <td>
-                                                    <a href="{{ route('administrator.plafond-dinas.edit', ['id' => $item->id]) }}"> <button class="btn btn-info btn-xs m-r-5"><i class="fa fa-edit"></i> edit</button></a>
-                                                    <form action="{{ route('administrator.plafond-dinas.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                                        {{ csrf_field() }}
-                                                        {{ method_field('DELETE') }}                                               
-                                                        <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i> delete</button>
-                                                    </form>
-                                                </td>
-                                        </tr>
-                                        @endforeach 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="luarnegeri">
-                            <h3 class="box-title m-b-0">Manage Plafond Dinas Luar Negeri</h3>
-                            <br />
-                            <div class="table-responsive">
-                                <table id="data_table2" class="display nowrap" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th width="70" class="text-center">#</th>
-                                            <th>LEVEL</th>
-                                            <th>HOTEL TYPE</th>
-                                            <th>TUNJANGAN MAKAN/HARI (USD)</th>
-                                            <th>TUNJANGAN HARIAN/UANG SAKU (USD / HARI)</th>
-                                            <th>KETERANGAN</th>
-                                            <th>#</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($data_luarnegeri as $no => $item)
-                                        <tr>
-                                            <td>{{ $no+1 }}</td>
-                                            <td>{{ ucfirst( strtolower($item->organisasi_position_text)) }}</td>
-                                            <td>{{ $item->hotel }}</td>
-                                            <td>{{ number_format($item->tunjangan_makanan) }}</td>
-                                            <td>{{ number_format($item->tunjangan_harian) }}</td>
-                                            <td>{{ $item->keterangan }}</td>
-                                            <td>
-                                                    <a href="{{ route('administrator.plafond-dinas.edit-luar-negeri', ['id' => $item->id]) }}"> <button class="btn btn-info btn-xs m-r-5"><i class="fa fa-edit"></i> edit</button></a>
-                                                    <a href="{{ route('administrator.plafond-dinas.edit-luar-negeri', ['id' => $item->id]) }}"> <button class="btn btn-danger btn-xs m-r-5"><i class="fa fa-trash"></i> delete</button></a>
-                                                </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div> 
-        </div>
-        <!-- ============================================================== -->
     </div>
-    <!-- /.container-fluid -->
-    @include('layouts.footer')
+    <div role="tabpanel" class="tab-pane fade" id="luarnegeri">
+        <br />
+        <h4 class="card-title">Manage Plafond Dinas Luar Negeri</h4>
+        <hr />
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered data-table" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th width="70" class="text-center">#</th>
+                        <th>LEVEL</th>
+                        <th>HOTEL TYPE</th>
+                        <th>TUNJANGAN MAKAN/HARI (USD)</th>
+                        <th>TUNJANGAN HARIAN/UANG SAKU (USD / HARI)</th>
+                        <th>KETERANGAN</th>
+                        <th>MANAGE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data_luarnegeri as $no => $item)
+                    <tr>
+                        <td>{{ $no+1 }}</td>
+                        <td>{{ ucfirst( strtolower($item->organisasi_position_text)) }}</td>
+                        <td>{{ $item->hotel }}</td>
+                        <td>{{ number_format($item->tunjangan_makanan) }}</td>
+                        <td>{{ number_format($item->tunjangan_harian) }}</td>
+                        <td>{{ $item->keterangan }}</td>
+                        <td>
+                            <a href="{{ route('administrator.plafond-dinas.edit-luar-negeri', ['id' => $item->id]) }}"><i class="la la-edit"></i></a>
+                            <a href="{{ route('administrator.plafond-dinas.delete', ['id' => $item->id]) }}"><i class="la la-trash"></i></a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!-- modal content education  -->

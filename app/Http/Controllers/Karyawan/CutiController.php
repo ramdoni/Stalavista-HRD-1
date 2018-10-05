@@ -25,7 +25,7 @@ class CutiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {  
         $params['data'] = CutiKaryawan::where('user_id', \Auth::user()->id)->orderBy('id', 'DESC')->get();
 
         return view('karyawan.cuti.index')->with($params);
@@ -117,12 +117,12 @@ class CutiController extends Controller
 
         \Mail::send('email.cuti-approval', $params,
             function($message) use($data) {
-                $message->from('services@asiafinance.com');
+                $message->from('services@stalavista.com');
                 $message->to($data->user->email);
-                $message->subject('PT. Arthaasia Finance - Pengajuan Cuti');
+                $message->subject(get_setting('title') .' - Submission Leave');
             }
         );
 
-        return redirect()->route('karyawan.cuti.index')->with('message-success', 'Data berhasil disimpan !');
+        return redirect()->route('karyawan.cuti.index')->with('message-success', 'Submission Leave ');
     }
 }

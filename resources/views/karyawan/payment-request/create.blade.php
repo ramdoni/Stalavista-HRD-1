@@ -1,183 +1,146 @@
-@extends('layouts.administrator')
+@extends('layouts.karyawan')
 
-@section('title', 'Payment Request - PT. Arthaasia Finance')
+@section('title', 'Payment Request')
 
-@section('sidebar')
-
-@endsection
+@section('page-url', route('karyawan.payment-request.index'))
 
 @section('content')
-
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Form Payment Request</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Payment Request</li>
-                </ol>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- .row -->
-        <div class="row">
-            <form class="form-horizontal" id="form_payment" enctype="multipart/form-data" action="{{ route('karyawan.payment-request.store') }}" method="POST">
-                <div class="col-md-12">
-                    <div class="white-box">
-                        <h3 class="box-title m-b-0">Data Payment Request</h3>
-                        <br />
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        {{ csrf_field() }}
-                        <div class="col-md-6" style="padding-left:0;">
-                            <div class="form-group">
-                                <label class="col-md-12">From</label>
-                                <div class="col-md-10">
-                                    <input type="text" class="form-control" value="{{ Auth::user()->nik .' / '. Auth::user()->name  }}" readonly="true">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-6">To : Accounting Department</label>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Tujuan / Purpose</label>
-                                <div class="col-md-10">
-                                    <textarea class="form-control" name="tujuan"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Jenis Transaksi / Trancation Type</label>
-                                <div class="col-md-12">
-                                    <label style="font-weight: normal;"><input type="radio" name="transaction_type" value="Advance" /> Advance</label> &nbsp;&nbsp;
-                                    <label style="font-weight: normal;"><input type="radio" name="transaction_type" value="Payment" /> Payment</label>
-                                </div>
-                            </div>
-                            <hr />
-                            <div class="form-group">
-                                <label class="col-md-12">Cara Pembayaran / Payment Method</label>
-                                <div class="col-md-12">
-                                    <label style="font-weight: normal;"><input type="radio" name="payment_method" value="Cash" /> Cash</label> &nbsp;&nbsp;
-                                    <label style="font-weight: normal;"><input type="radio" name="payment_method" value="Bank Transfer" /> Bank Transfer</label>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="col-md-12">Nama Pemilik Rekening / Name of Account</label>
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" readonly="true" value="{{ Auth::user()->nama_rekening }}" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">No Rekening / Account Number</label>
-                                <div class="col-md-12">
-                                    <input type="number" class="form-control" readonly="true" value="{{ Auth::user()->nomor_rekening }}" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Nama Bank / Name Of Bank</label>
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" readonly="true" value="{{ isset(Auth::user()->bank) ? Auth::user()->bank->name : '' }}" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-                        <div class="table-responsive">
-                            <table class="table table-hover manage-u-table">
-                                <thead>
-                                    <tr>
-                                        <th>NO</th>
-                                        <th>TYPE</th>
-                                        <th>DESCRIPTION</th>
-                                        <th>QUANTITY</th>
-                                        <th>ESTIMATION COST</th>
-                                        <th>AMOUNT</th>
-                                        <th>AMOUNT APPROVED</th>
-                                        <th>BUKTI TRANSAKSI</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table-content-lembur">
-                                    <tr>
-                                        <td>1</td>
-                                        <td>
-                                            <div class="col-md-10" style="padding-left:0;">
-                                                <select name="type[]" class="form-control input">
-                                                    <option value=""> - none - </option>
-                                                    <option>Parkir</option>
-                                                    <option>Bensin</option>
-                                                    <option>Tol</option>
-                                                    <option>Overtime Transport</option>
-                                                    <option>Others</option>
-                                                </select>
-                                            </div>
-                                            <div class="content_bensin"></div>
-                                            <div class="content_overtime"></div>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control input" name="description[]">
-                                        </td>
-                                        <td>
-                                            <input type="number" name="quantity[]" class="form-control input">
-                                        </td>
-                                        <td>
-                                            <input type="number" name="estimation_cost[]" class="form-control estimation input">
-                                        </td>
-                                        <td>
-                                            <input type="number" name="amount[]" class="form-control amount input">
-                                        </td>
-                                        <td>
-                                            <input type="number" name="amount_approved[]" class="form-control" readonly="true">
-                                        </td>
-                                        <td>
-                                            <input type="file" name="file_struk[] input" class="form-control">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="4" style="text-align: right;">TOTAL NOMINAL PEMBAYARAN / PAYMENT AMOUNT</th>
-                                        <th class="total"></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                            <a class="btn btn-info btn-xs pull-right" id="add"><i class="fa fa-plus"></i> Tambah</a>
-                        </div>
-                        <hr />
-                        <div class="clearfix"></div>
-                        <br />
-                        <a href="{{ route('karyawan.payment-request.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
-                        <a class="btn btn-sm btn-success waves-effect waves-light m-r-10" id="submit_payment"><i class="fa fa-save"></i> Submit Payment Request</a>
-                        <br style="clear: both;" />
-                        <div class="clearfix"></div>
+<form class="form-horizontal" id="form_payment" enctype="multipart/form-data" action="{{ route('karyawan.payment-request.store') }}" method="POST">
+    <div class="col-md-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Form Payment Request</h3>
+            <br />
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                    </ul>
+                </div>
+            @endif
+            {{ csrf_field() }}
+            <div class="col-md-6 pull-left" style="padding-left:0;">
+                <div class="form-group">
+                    <p class="col-md-12">From</p>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" value="{{ Auth::user()->nik .' / '. Auth::user()->name  }}" readonly="true">
                     </div>
-                </div>    
-            </form>                    
+                </div>
+                <div class="form-group">
+                    <p class="col-md-6">To : Accounting Department</p>
+                </div>
+                <div class="form-group">
+                    <p class="col-md-12">Tujuan / Purpose</p>
+                    <div class="col-md-10">
+                        <textarea class="form-control" name="tujuan"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="col-md-12">Jenis Transaksi / Trancation Type</p>
+                    <div class="col-md-12">
+                        <label style="font-weight: normal;"><input type="radio" name="transaction_type" value="Advance" /> Advance</label> &nbsp;&nbsp;
+                        <label style="font-weight: normal;"><input type="radio" name="transaction_type" value="Payment" /> Payment</label>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group">
+                    <p class="col-md-12">Cara Pembayaran / Payment Method</p>
+                    <div class="col-md-12">
+                        <label style="font-weight: normal;"><input type="radio" name="payment_method" value="Cash" /> Cash</label> &nbsp;&nbsp;
+                        <label style="font-weight: normal;"><input type="radio" name="payment_method" value="Bank Transfer" /> Bank Transfer</label>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 pull-left">
+                <div class="form-group">
+                    <p class="col-md-12">Nama Pemilik Rekening / Name of Account</p>
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" readonly="true" value="{{ Auth::user()->nama_rekening }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="col-md-12">No Rekening / Account Number</p>
+                    <div class="col-md-12">
+                        <input type="number" class="form-control" readonly="true" value="{{ Auth::user()->nomor_rekening }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p class="col-md-12">Nama Bank / Name Of Bank</p>
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" readonly="true" value="{{ isset(Auth::user()->bank) ? Auth::user()->bank->name : '' }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="table-responsive">
+                <table class="table table-hover manage-u-table">
+                    <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>TYPE</th>
+                            <th>DESCRIPTION</th>
+                            <th>QUANTITY</th>
+                            <th>ESTIMATION COST</th>
+                            <th>AMOUNT</th>
+                            <th>BUKTI TRANSAKSI</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-content-lembur">
+                        <tr>
+                            <td>1</td>
+                            <td>
+                                <div class="col-md-10" style="padding-left:0;">
+                                    <select name="type[]" class="form-control input">
+                                        <option value=""> - none - </option>
+                                        <option>Parkir</option>
+                                        <option>Bensin</option>
+                                        <option>Tol</option>
+                                        <option>Overtime Transport</option>
+                                        <option>Others</option>
+                                    </select>
+                                </div>
+                                <div class="content_bensin"></div>
+                                <div class="content_overtime"></div>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-form-payment" name="description[]">
+                            </td>
+                            <td>
+                                <input type="number" name="quantity[]" class="form-control input-form-payment">
+                            </td>
+                            <td>
+                                <input type="number" name="estimation_cost[]" class="form-control estimation input-form-payment">
+                            </td>
+                            <td>
+                                <input type="number" name="amount[]" class="form-control amount input-form-payment">
+                            </td>
+                            <td>
+                                <input type="file" name="file_struk[] input" class="form-control input-form-payment">
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4" style="text-align: right;">TOTAL NOMINAL PEMBAYARAN / PAYMENT AMOUNT</th>
+                            <th class="total"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <a class="btn btn-light btn-sm pull-right" id="add"><i class="la la-plus"></i></a>
+            </div>
+            <hr />
+            <div class="clearfix"></div>
+            <br />
+            <a href="{{ route('karyawan.payment-request.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
+            <button type="button" class="btn btn-sm btn-success waves-effect waves-light m-r-10" id="submit_payment"><i class="fa fa-save"></i> Submit Payment Request</button>
         </div>
-        <!-- /.row -->
-        <!-- ============================================================== -->
-    </div>
-    <!-- /.container-fluid -->
-    @extends('layouts.footer')
-</div>
+    </div>    
+</form>  
 
 <!-- sample modal content -->
 <div id="modal_overtime" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -273,13 +236,7 @@
 </div>
 
 @section('footer-script')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-<!-- <link href="{{ asset('admin-css/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
-<script src="{{ asset('admin-css/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script> -->
-<script type="text/javascript">
-    
+<script type="text/javascript">    
     var list_atasan = [];
 
     @foreach(get_atasan_langsung() as $item)
@@ -289,32 +246,6 @@
 <script type="text/javascript">
     
     var validate_form = true;
-
-    $(".autcomplete-atasan" ).autocomplete({
-        source: list_atasan,
-        minLength:0,
-        select: function( event, ui ) {
-            $( "input[name='atasan_user_id']" ).val(ui.item.id);
-            
-            var id = ui.item.id;
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('ajax.get-karyawan-by-id') }}',
-                data: {'id' : id, '_token' : $("meta[name='csrf-token']").attr('content')},
-                dataType: 'json',
-                success: function (data) {
-
-                    $('.jabatan_atasan').val(data.data.organisasi_job_role);
-                    $('.department_atasan').val(data.data.department_name);
-                    $('.no_handphone_atasan').val(data.data.telepon);
-                    $('.email_atasan').val(data.data.email);
-                }
-            });
-        }
-    }).on('focus', function () {
-            $(this).autocomplete("search", "");
-    });
 
     general_function();
 
@@ -329,8 +260,6 @@
         $("input[name=overtime_item]:checked").each(function(){
             el += '<input type="hidden" name="overtime[]" value="'+ $(this).val() +'" />';
         });
-
-       //el += '<a class="btn btn-info btn-xs" onclick="info_overtime(this)"><i class="fa fa-info"></i></a>';
 
         general_el.parent().parent().find('.content_overtime').html(el);
 
@@ -389,7 +318,7 @@
 
         cek_form();
         
-        if(!validate_form)
+        if(validate_form==false)
         {
             bootbox.alert('Form belum lengkap !');
 
@@ -436,14 +365,13 @@
 
         var html = '<tr>';
             html += '<td>'+ (no+1) +'</td>';
-            html += '<td><select name="type[]" class="form-control input"><option value=""> - none - </option><option>Parkir</option><option>Bensin</option><option>Tol</option><option>Overtime Transport</option><option>Others</option></select></td>';
-            html += '<td class="description_td"><input type="text" class="form-control input" name="description[]"></td>';
-            html += '<td><input type="number" name="quantity[]" class="form-control input" /></td>';
-            html += '<td><input type="number" name="estimation_cost[]" class="form-control estimation input" /></td>';
-            html += '<td><input type="number" name="amount[]" class="form-control amount input" /></td>';
-            html += '<td><input type="number" name="amount_approved[]" class="form-control input" readonly="true" /></td>';
-            html += '<td><input type="file" name="file_struk[]" class="form-control input input" /></td>';
-            html += '<td><a class="btn btn-danger btn-xs" onclick="hapus_item(this)"><i class="fa fa-trash"></i> hapus</a></td>';
+            html += '<td><select name="type[]" class="form-control input-form-payment"><option value=""> - none - </option><option>Parkir</option><option>Bensin</option><option>Tol</option><option>Overtime Transport</option><option>Others</option></select></td>';
+            html += '<td class="description_td"><input type="text" class="form-control input-form-payment" name="description[]"></td>';
+            html += '<td><input type="number" name="quantity[]" class="form-control input-form-payment" /></td>';
+            html += '<td><input type="number" name="estimation_cost[]" class="form-control estimation input-form-payment" /></td>';
+            html += '<td><input type="number" name="amount[]" class="form-control amount input-form-payment" /></td>';
+            html += '<td><input type="file" name="file_struk[]" class="form-control input input-form-payment" /></td>';
+            html += '<td><a class="text-danger" onclick="hapus_item(this)"><i class="la la-trash"></i> </a></td>';
             html += '</tr>';
 
         $('.table-content-lembur').append(html);
@@ -469,7 +397,7 @@
     function cek_form()
     {
         validate_form = true;
-        $(".input").each(function(){
+        $(".input-form-payment").each(function(){
             if($(this).val() == "")
             {
                 validate_form = false;

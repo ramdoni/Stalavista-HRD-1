@@ -1,101 +1,75 @@
 @extends('layouts.administrator')
 
-@section('title', 'Dashboard - PT. Arthaasia Finance')
+@section('title', 'Employee')
 
 @section('sidebar')
 
 @endsection
 
+@section('page-title', 'Employee')
+
+@section('page-url', route('administrator.karyawan.index'))
+
+@section('page-create', route('administrator.karyawan.create'))
+
 @section('content')
-
-  
-        
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Dashboard</h4> 
-            </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                <a href="{{ route('administrator.karyawan.create') }}" class="btn btn-success btn-sm pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light"> <i class="fa fa-plus"></i> TAMBAH KARYAWAN</a>
-
-                <a class="btn btn-info btn-sm pull-right m-l-20 hidden-xs hidden-sm waves-effect waves-light" id="add-import-karyawan"> <i class="fa fa-upload"></i> IMPORT</a>
-                
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Karyawan</li>
-                </ol>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        
-        <!-- .row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0">Manage Karyawan</h3>
-                    <br />
-                    <div class="table-responsive">
-                        <table id="data_table" class="display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="70" class="text-center">#</th>
-                                    <th>NIK</th>
-                                    <th>NAME</th>
-                                    <th>JENIS KELAMIN</th>
-                                    <th>TELEPON</th>
-                                    <th>EMAIL</th>
-                                    <th>DEPARTEMENT</th>
-                                    <th>POSITION</th>
-                                    <th>JOB RULE</th>
-                                    <th>STATUS LOGIN</th>
-                                    <th>MANAGE</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($data as $no => $item)
-                                    <tr>
-                                        <td class="text-center">{{ $no+1 }}</td>
-                                        <td>{{ $item->nik }}</td>
-                                        <td>{{ strtoupper($item->name) }}</td>
-                                        <td>{{ $item->jenis_kelamin }}</td>
-                                        <td>{{ $item->telepon }}</td>
-                                        <td>{{ $item->email }}</td>
-                                        <td>{{ isset($item->department->name) ? $item->department->name : '' }}</td>
-                                        <td>{{ isset($item->organisasiposition->name) ? $item->organisasiposition->name : '' }}</td>
-                                        <td>{{ $item->organisasi_job_role }}</td>
-                                        <td>
-                                            <a onclick="status_karyawan('{{ $item->name .' - '. $item->nik }}',  {{ $item->id }}, {{ $item->status }})"> 
-                                            @if($item->status == 1)
-                                                <label class="btn btn-success btn-xs"><i class="fa fa-check"></i> Active</label>
-                                            @else
-                                                <label class="btn btn-danger btn-xs"><i class="fa fa-close"></i> Inactive</label>
-                                            @endif
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('administrator.karyawan.edit', ['id' => $item->id]) }}"> <button class="btn btn-info btn-xs m-r-5"><i class="fa fa-search-plus"></i> detail</button></a>
-                                            <div class="clearfix"></div>
-                                            <a class="btn btn-default btn-xs" onclick="change_password('{{ $item->name .' - '. $item->nik }}', {{ $item->id }})"><i class="fa fa-key"></i> Change Password </a><br />
-                                            <a href="{{ route('administrator.karyawan.print-profile', $item->id) }}" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-print"></i> print</a>
-                                            <a onclick="confirm_loginas('{{ $item->name }}','{{ route('administrator.karyawan.autologin', $item->id) }}')"  class="btn btn-warning btn-xs"><i class="fa fa-key"></i> Autologin</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> 
-        </div>
-        <!-- ============================================================== -->
-    </div>
-    <!-- /.container-fluid -->
-    @include('layouts.footer')
+<div class="table-responsive">
+    <table class="table table-striped table-bordered data-table" style="width: 100%;">
+        <thead>
+            <tr>
+                <th width="70" class="text-center">#</th>
+                <th>NIK</th>
+                <th>NAME</th>
+                <th>TELEPON</th>
+                <th>EMAIL</th>
+                <th>DEPARTEMENT</th>
+                <th>POSITION</th>
+                <th>JOB RULE</th>
+                <th>STATUS LOGIN</th>
+                <th>MANAGE</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($data as $no => $item)
+                <tr>
+                    <td class="text-center">{{ $no+1 }}</td>
+                    <td>{{ $item->nik }}</td>
+                    <td>{{ strtoupper($item->name) }}</td>
+                    <td>{{ $item->telepon }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ isset($item->department->name) ? $item->department->name : '' }}</td>
+                    <td>{{ isset($item->organisasiposition->name) ? $item->organisasiposition->name : '' }}</td>
+                    <td>{{ $item->organisasi_job_role }}</td>
+                    <td>
+                        <a onclick="status_karyawan('{{ $item->name .' - '. $item->nik }}',  {{ $item->id }}, {{ $item->status }})"> 
+                        @if($item->status == 1)
+                            <label class="text-success"><i class="la la-check"></i> Active</label>
+                        @else
+                            <label class="text-danger"><i class="la la-close"></i> Inactive</label>
+                        @endif
+                        </a>
+                    </td>
+                    <td>
+                        <div class="btn-group mr-1 mb-1">
+                            <button type="button" class="btn btn-info btn-sm">Action</button>
+                            <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                              <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('administrator.karyawan.edit', ['id' => $item->id]) }}"><i class="la la-search-plus"></i> Detail</a>
+                                <a class="dropdown-item" title="Change Password " onclick="change_password('{{ $item->name .' - '. $item->nik }}', {{ $item->id }})"><i class="la la-key"></i> Change Password</a>
+                                <a class="dropdown-item" href="{{ route('administrator.karyawan.print-profile', $item->id) }}" target="_blank"><i class="la la-print"></i> Print</a>
+                                <a class="dropdown-item" onclick="confirm_loginas('{{ $item->name }}','{{ route('administrator.karyawan.autologin', $item->id) }}')" title="Autologin"><i class="la la-unlock-alt"></i> Autologin</a>
+                            </div>
+                        </div>                        
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
+
 <!-- modal content education  -->
 <div id="modal_import" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

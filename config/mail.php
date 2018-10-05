@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('MAIL_ENCRYPTION', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('ramdoni@stalavista.com'),
+    'username' => env('MAIL_USERNAME', ""),
 
-    'password' => env('Doni88'),
+    'password' => env('MAIL_PASSWORD', ""),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,8 +1,15 @@
-
-@if(Session::has('message-success'))
-	<div class="myadmin-alert myadmin-alert-icon myadmin-alert-click alert-success myadmin-alert-top alerttop" style="display: block;"> <i class="ti-user"></i> {{ Session::get('message-success') }} <a href="javascript:void(0)" class="closed">×</a> </div>
-@endif
-
-@if(Session::has('message-error'))
-	<div class="myadmin-alert myadmin-alert-icon myadmin-alert-click alert-danger myadmin-alert-bottom alertbottom" style="display: block; top:0 !important; bottom: auto;"> <i class="ti-user"></i> {{ Session::get('message-error') }} <a href="javascript:void(0)" class="closed">×</a> </div>
-@endif
+@section('js')
+<script src="{{ asset('app-assets/vendors/js/extensions/sweetalert.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+	@if(Session::has('message-success'))
+		setTimeout(function(){
+      		swal("Success", "{{ Session::get('message-success') }}", "success");			
+		}, 500);
+    @endif
+    @if(Session::has('message-error'))
+		setTimeout(function(){
+      		swal("Error!", "{{ Session::get('message-error') }}", "error");
+      	}, 500);
+    @endif
+</script>
+@endsection

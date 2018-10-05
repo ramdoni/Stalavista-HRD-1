@@ -1,498 +1,482 @@
 @extends('layouts.administrator')
 
-@section('title', 'Karyawan - PT. Arthaasia Finance')
+@section('title', 'Employee')
 
-@section('sidebar')
+@section('page-title', 'Employee')
 
-@endsection
+@section('page-url', route('administrator.karyawan.index'))
 
 @section('content')
-
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Form Karyawan</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Karyawan</li>
-                </ol>
-            </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- .row -->
-    <div class="row">
-        <form class="form-horizontal" enctype="multipart/form-data" action="{{ route('administrator.karyawan.update', $data->id ) }}" method="POST">
-            <input type="hidden" name="_method" value="PUT">
-            <div class="col-md-12">
-                <div class="white-box">
-
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <ul class="nav customtab nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#biodata" aria-controls="home" role="tab" data-toggle="tab" aria-expanded="true"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs"> Biodata</span></a></li>
-
-                        <li role="presentation" class=""><a href="#dependent" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Dependent</span></a></li>
-                        
-                        <li role="presentation" class=""><a href="#education" aria-controls="settings" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Education</span></a></li>
-
-                        <li role="presentation" class=""><a href="#department" aria-controls="settings" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Department / Division</span></a></li>
-
-                        <li role="presentation" class=""><a href="#rekening_bank" aria-controls="settings" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Data Rekening Bank</span></a></li>
-
-                        <li role="presentation" class=""><a href="#inventaris" aria-controls="settings" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Inventaris</span></a></li>
-
-                        <li role="presentation" class=""><a href="#cuti" aria-controls="settings" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Cuti</span></a></li>
+    <form class="form-horizontal" enctype="multipart/form-data" action="{{ route('administrator.karyawan.update', $data->id ) }}" method="POST">
+        <input type="hidden" name="_method" value="PUT">
+        <div class="white-box">
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                    <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
                     </ul>
+                </div>
+            @endif
+            <ul class="nav nav-tabs"> 
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" aria-controls="biodata" aria-expanded="true" href="#biodata"><i class="la la-home"></i> Biodata</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" aria-controls="dependent" aria-expanded="true" href="#dependent"><i class="la la-users"></i> Dependent</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" aria-controls="education" aria-expanded="true" href="#education"><i class="la la-book"></i> Education</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" aria-controls="department" aria-expanded="true" href="#department"><i class="la la-sitemap"></i> Department / Division</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" aria-controls="rekening_bank" aria-expanded="true" href="#rekening_bank"><i class="la la-bank"></i> Data Rekening Bank</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" aria-controls="inventaris" aria-expanded="true" href="#inventaris"><i class="la la-automobile"></i> Inventaris</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" aria-controls="inventaris" aria-expanded="true" href="#cuti"><i class="la la-calendar"></i> Cuti</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade" id="cuti">
+                    <h4 class="card-title">Cuti</h4>
+                    <a class="btn btn-info btn-xs" id="add_cuti"><i class="fa fa-plus"></i> Tambah</a>
+                    <div class="clearfix"></div>
+                    <div class="col-md-6">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Jenis Cuti / Ijin</th>
+                                    <th>Kuota</th>
+                                    <th>Terpakai</th>
+                                    <th>Sisa Cuti</th>
+                                    <td>#</td>
+                                </tr>
+                            </thead>
+                            <tbody class="table_cuti">
+                                @foreach($data->cuti as $no => $item)
+                                <tr>
+                                    <td>{{ $no+1 }}</td>
+                                    <td>{{ isset($item->cuti->jenis_cuti) ? $item->cuti->jenis_cuti : '' }}</td>
+                                    <td>{{ $item->kuota }}</td>
+                                    <td>{{ $item->cuti_terpakai }}</td>
+                                    <td>{{ $item->sisa_cuti }}</td>
+                                    <td>
+                                        <a onclick="edit_cuti({{ $item->id }}, {{ $item->cuti_id }}, {{ empty($item->kuota) ? 0 : $item->kuota  }}, {{ empty($item->cuti_terpakai) ? 0 :$item->cuti_terpakai }})" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> </a>
+                                        <a href="{{ route('administrator.karyawan.delete-cuti', $item->id) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <br />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="inventaris">
+                    <h4 class="card-title">Mobil</h4>
+                    <a class="btn btn-info btn-xs" id="add_inventaris_mobil"><i class="fa fa-plus"></i> Tambah</a>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tipe Mobil</th>
+                                <th>Tahun</th>
+                                <th>No Polisi</th>
+                                <th>Status Mobil</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table_mobil">
+                            @foreach($data->inventaris_mobil as $no => $item)
+                            <tr>
+                                <td>{{ $no + 1 }}</td>
+                                <td>{{ $item->tipe_mobil }}</td>
+                                <td>{{ $item->tahun }}</td>
+                                <td>{{ $item->no_polisi }}</td>
+                                <td>{{ $item->status_mobil }}</td>
+                                <td>
+                                    <a class="btn btn-default btn-xs" onclick="edit_inventaris_mobil({{ $item->id }}, '{{ $item->tipe_mobil }}','{{ $item->tahun }}', '{{ $item->no_polisi }}', '{{ $item->status_mobil }}')"><i class="fa fa-edit"></i></a>
+                                    <a href="{{ route('administrator.karyawan.delete-inventaris-mobil', $item->id) }}" onclick="return confirm('Hapus data ini ?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <br />
 
-                    <div class="tab-content">
+                    <br />
+                    <h3>Lainnya</h3>
+                    <a class="btn btn-info btn-xs" id="add_inventaris_lainnya"><i class="fa fa-plus"></i> Tambah</a>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Inventaris</th>
+                                <th>Keterangan</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table_inventaris_lainnya">
+                            @foreach($data->inventaris as $no => $item)
+                            <tr>
+                                <td>{{ $no+1 }}</td>
+                                <td>{{ $item->jenis }}</td>
+                                <td>{{ $item->description }}</td>
+                                <td>
+                                    <a class="btn btn-default btn-xs" onclick="edit_inventaris_lainnya({{ $item->id }}, '{{ $item->jenis }}', '{{ $item->description }}')"><i class="fa fa-edit"></i></a>
+                                        <a href="{{ route('administrator.karyawan.delete-inventaris-lainnya', $item->id) }}" onclick="return confirm('Hapus data ini?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table><br />
+                </div>
 
-                        <div role="tabpanel" class="tab-pane fade" id="cuti">
-                            <h3>Cuti</h3>
-                            <a class="btn btn-info btn-xs" id="add_cuti"><i class="fa fa-plus"></i> Tambah</a>
-                            <div class="clearfix"></div>
+                <div role="tabpanel" class="tab-pane fade" id="rekening_bank">
+                    <div class="form-group">
+                        <label class="col-md-12">Nama Pemilik Rekening / Name of Account</label>
+                        <div class="col-md-6">
+                            <input type="text" name="nama_rekening" class="form-control" value="{{ $data->nama_rekening }}"  />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Nomor Rekening / Account Number</label>
+                        <div class="col-md-6">
+                           <input type="text" name="nomor_rekening" class="form-control" value="{{ $data->nomor_rekening }}" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-12">Nama Bank / Name of Bank</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="bank_id">
+                                <option value="">Pilih Bank</option>
+                                @foreach(get_bank() as $item)
+                                <option value="{{ $item->id }}" {{ $item->id == $data->bank_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="department">
+                    <div class="form-group">
+                        <label class="col-md-12">Branch Type</label>
+                        <div class="col-md-6">
+                            <select class="form-control" name="branch_type">
+                                <option value=""> - none - </option>
+                                @foreach(['HO', 'BRANCH', 'VSBD'] as $item)
+                                <option {{ $data->branch_type == $item ? ' selected' : '' }}>{{ $item }}</option>
+                                @endforeach
+                            </select> 
+                        </div>
+                    </div>
+                    <div class="form-group section-cabang" style="{{ $data->branch_type == "HO" ? 'display:none' : ''  }}">
+                        <label class="col-md-3">Cabang</label>
+                        <div class="clearfix"></div>
+                        <div class="col-md-3">
+                            <select class="form-control" name="cabang_id">
+                                <option value="">Pilih Cabang</option>
+                                @foreach(get_cabang() as $item)
+                                <option value="{{ $item->id }}" {{ $item->id == $data->cabang_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                @endforeach
+                            </select> 
+                        </div>
+                        <div class="clearfix" /></div>
+                        <br class="clearfix" />
+                        <br>
+                        <div class="col-md-12">
+                            <label><input type="checkbox" name="is_pic_cabang" value="1" {{ $data->is_pic_cabang == 1 ? 'checked' : '' }}> PIC Cabang</label>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                    </div>
+                    <div class="section-ho">
+                        <div class="form-group">
+                            <label class="col-md-12">Division</label>
                             <div class="col-md-6">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Jenis Cuti / Ijin</th>
-                                            <th>Kuota</th>
-                                            <th>Terpakai</th>
-                                            <th>Sisa Cuti</th>
-                                            <td>#</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table_cuti">
-                                        @foreach($data->cuti as $no => $item)
-                                        <tr>
-                                            <td>{{ $no+1 }}</td>
-                                            <td>{{ isset($item->cuti->jenis_cuti) ? $item->cuti->jenis_cuti : '' }}</td>
-                                            <td>{{ $item->kuota }}</td>
-                                            <td>{{ $item->cuti_terpakai }}</td>
-                                            <td>{{ $item->sisa_cuti }}</td>
-                                            <td>
-                                                <a onclick="edit_cuti({{ $item->id }}, {{ $item->cuti_id }}, {{ empty($item->kuota) ? 0 : $item->kuota  }}, {{ empty($item->cuti_terpakai) ? 0 :$item->cuti_terpakai }})" class="btn btn-default btn-xs"><i class="fa fa-edit"></i> </a>
-                                                <a href="{{ route('administrator.karyawan.delete-cuti', $item->id) }}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <br />
+                                <select class="form-control" name="division_id">
+                                    <option value="">Pilih Division</option>
+                                    @foreach(get_organisasi_division() as $item)
+                                    <option value="{{ $item->id }}" {{ $data->division_id == $item->id ? 'selected' : '' }} >{{ $item->name }}</option>
+                                    @endforeach
+                                </select> 
                             </div>
-                            <div class="clearfix"></div>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="inventaris">
-                            <h3>Mobil</h3>
-                            <a class="btn btn-info btn-xs" id="add_inventaris_mobil"><i class="fa fa-plus"></i> Tambah</a>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tipe Mobil</th>
-                                        <th>Tahun</th>
-                                        <th>No Polisi</th>
-                                        <th>Status Mobil</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table_mobil">
-                                    @foreach($data->inventaris_mobil as $no => $item)
-                                    <tr>
-                                        <td>{{ $no + 1 }}</td>
-                                        <td>{{ $item->tipe_mobil }}</td>
-                                        <td>{{ $item->tahun }}</td>
-                                        <td>{{ $item->no_polisi }}</td>
-                                        <td>{{ $item->status_mobil }}</td>
-                                        <td>
-                                            <a class="btn btn-default btn-xs" onclick="edit_inventaris_mobil({{ $item->id }}, '{{ $item->tipe_mobil }}','{{ $item->tahun }}', '{{ $item->no_polisi }}', '{{ $item->status_mobil }}')"><i class="fa fa-edit"></i></a>
-                                            <a href="{{ route('administrator.karyawan.delete-inventaris-mobil', $item->id) }}" onclick="return confirm('Hapus data ini ?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <br />
-
-                            <br />
-                            <h3>Lainnya</h3>
-                            <a class="btn btn-info btn-xs" id="add_inventaris_lainnya"><i class="fa fa-plus"></i> Tambah</a>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Nama Inventaris</th>
-                                        <th>Keterangan</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table_inventaris_lainnya">
-                                    @foreach($data->inventaris as $no => $item)
-                                    <tr>
-                                        <td>{{ $no+1 }}</td>
-                                        <td>{{ $item->jenis }}</td>
-                                        <td>{{ $item->description }}</td>
-                                        <td>
-                                            <a class="btn btn-default btn-xs" onclick="edit_inventaris_lainnya({{ $item->id }}, '{{ $item->jenis }}', '{{ $item->description }}')"><i class="fa fa-edit"></i></a>
-                                                <a href="{{ route('administrator.karyawan.delete-inventaris-lainnya', $item->id) }}" onclick="return confirm('Hapus data ini?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table><br />
+                        <div class="form-group">
+                            <label class="col-md-12">Department</label>
+                            <div class="col-md-6">
+                                <select class="form-control" name="department_id">
+                                    <option value="">Pilih Department</option>
+                                    @if(!empty($data->division_id)) 
+                                        @if(isset($data->department->name))
+                                            @foreach(get_organisasi_department($data->division_id) as $item)
+                                            <option value="{{ $item->id }}" {{ $item->id == $data->department_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    @endif
+                                </select> 
+                            </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Unit / Section</label>
+                            <div class="col-md-6">
+                                <select class="form-control" name="section_id">
+                                    <option value="">Pilih Section</option>
+                                    @if(!empty($data->department_id))
+                                        @if(isset($data->section->name))
+                                            @foreach(get_organisasi_unit($data->department_id) as $item)
+                                            <option value="{{ $item->id }}" {{ $item->id == $data->section_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    @endif
+                                </select> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Position</label>
+                            <div class="col-md-6">
+                                <select class="form-control" name="organisasi_position">
+                                    @foreach(get_organisasi_position() as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->organisasi_position ? 'selected' : '' }}>{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Job Rule</label>
+                            <div class="col-md-6">
+                                <input type="text" value="{{ $data->organisasi_job_role }}" name="organisasi_job_role" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                        <div role="tabpanel" class="tab-pane fade" id="rekening_bank">
+                <div role="tabpanel" class="tab-pane active" id="biodata">
+                  <div class="card-body">
+                    <div class="row">
+                        {{ csrf_field() }}
+                        <div class="col-md-6 pull-left" style="padding-left: 0">
                             <div class="form-group">
-                                <label class="col-md-12">Nama Pemilik Rekening / Name of Account</label>
-                                <div class="col-md-6">
-                                    <input type="text" name="nama_rekening" class="form-control" value="{{ $data->nama_rekening }}"  />
+                                <label class="col-md-12">Name</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="name" style="text-transform: uppercase" class="form-control" value="{{ $data->name }}"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Employee Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="employee_number" class="form-control" value="{{ $data->employee_number }}"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Absensi Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="absensi_number" class="form-control" value="{{ $data->employee_number }}"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">NIK</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="nik" value="{{ $data->nik }}" class="form-control"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Ext</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="ext" value="{{ $data->ext }}" class="form-control"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">LDAP</label>
+                                <div class="col-md-10">
+                                    <input type="number" name="ldap" value="{{ $data->ldap }}" class="form-control"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Place of Birth</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="tempat_lahir" value="{{ $data->tempat_lahir }}" class="form-control"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Date of Birth</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="tanggal_lahir" value="{{ $data->tanggal_lahir }}" class="form-control datepicker"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Marital Status</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="marital_status" value="{{ $data->marital_status }}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-12">Nomor Rekening / Account Number</label>
-                                <div class="col-md-6">
-                                   <input type="text" name="nomor_rekening" class="form-control" value="{{ $data->nomor_rekening }}" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Nama Bank / Name of Bank</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" name="bank_id">
-                                        <option value="">Pilih Bank</option>
-                                        @foreach(get_bank() as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $data->bank_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                <label class="col-md-12">Gender</label>
+                                <div class="col-md-10">
+                                    <select class="form-control" name="jenis_kelamin" required>
+                                        <option value=""> - Gender - </option>
+                                        @foreach(['Laki-laki', 'Perempuan'] as $item)
+                                            <option {{ $data->jenis_kelamin == $item ? 'selected' : '' }}>{{ $item }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane fade" id="department">
                             <div class="form-group">
-                                <label class="col-md-12">Branch Type</label>
-                                <div class="col-md-6">
-                                    <select class="form-control" name="branch_type">
-                                        <option value=""> - none - </option>
-                                        @foreach(['HO', 'BRANCH', 'VSBD'] as $item)
-                                        <option {{ $data->branch_type == $item ? ' selected' : '' }}>{{ $item }}</option>
-                                        @endforeach
-                                    </select> 
-                                </div>
+                                <label class="col-md-12">Blood Type</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" value="{{ $data->blood_type }}" name="blood_type"> </div>
                             </div>
-                           
-                            <div class="form-group section-cabang" style="{{ $data->branch_type == "HO" ? 'display:none' : ''  }}">
-                                <label class="col-md-3">Cabang</label>
-                                <div class="clearfix"></div>
-                                <div class="col-md-3">
-                                    <select class="form-control" name="cabang_id">
-                                        <option value="">Pilih Cabang</option>
-                                        @foreach(get_cabang() as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $data->cabang_id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                        @endforeach
-                                    </select> 
-                                </div>
-                                <div class="clearfix" /></div>
-                                <br class="clearfix" />
-                                <br>
+                            <div class="form-group">
+                                <label for="example-email" class="col-md-12">Email</label>
+                                <div class="col-md-10">
+                                    <input type="email" value="{{ $data->email }}" class="form-control" name="email" id="example-email"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Password</label>
                                 <div class="col-md-12">
-                                    <label><input type="checkbox" name="is_pic_cabang" value="1" {{ $data->is_pic_cabang == 1 ? 'checked' : '' }}> PIC Cabang</label>
+                                    <input type="password" name="password" class="form-control">
                                 </div>
-                                <div class="clearfix"></div>
-                                <hr />
                             </div>
-
-                            <div class="section-ho">
-                                <div class="form-group">
-                                    <label class="col-md-12">Division</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="division_id">
-                                            <option value="">Pilih Division</option>
-                                            @foreach(get_organisasi_division() as $item)
-                                            <option value="{{ $item->id }}" {{ $data->division_id == $item->id ? 'selected' : '' }} >{{ $item->name }}</option>
-                                            @endforeach
-                                        </select> 
-                                    </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Confirm Password</label>
+                                <div class="col-md-12">
+                                    <input type="password" name="confirm" class="form-control">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Department</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="department_id">
-                                            <option value="">Pilih Department</option>
-                                            @if(!empty($data->division_id)) 
-                                                @if(isset($data->department->name))
-                                                    @foreach(get_organisasi_department($data->division_id) as $item)
-                                                    <option value="{{ $item->id }}" {{ $item->id == $data->department_id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            @endif
-                                        </select> 
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Join Date</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="join_date" class="form-control datepicker" value="{{ ($data->join_date == '0000-00-00' ? '' : $data->join_date) }}">
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Unit / Section</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="section_id">
-                                            <option value="">Pilih Section</option>
-                                            @if(!empty($data->department_id))
-                                                @if(isset($data->section->name))
-                                                    @foreach(get_organisasi_unit($data->department_id) as $item)
-                                                    <option value="{{ $item->id }}" {{ $item->id == $data->section_id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                    @endforeach
-                                                @endif
-                                            @endif
-                                        </select> 
-                                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-6">Employee Status</label>
+                                <label class="col-md-6">Status Login</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" name="organisasi_status">
+                                        <option value="">- select - </option>
+                                        @foreach(['Permanent', 'Contract'] as $item)
+                                        <option {{ $data->organisasi_status == $item ? 'selected' : '' }}>{{ $item }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Position</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="organisasi_position">
-                                            @foreach(get_organisasi_position() as $item)
-                                            <option value="{{ $item->id }}" {{ $item->id == $data->organisasi_position ? 'selected' : '' }}>{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Job Rule</label>
-                                    <div class="col-md-6">
-                                        <input type="text" value="{{ $data->organisasi_job_role }}" name="organisasi_job_role" class="form-control">
-                                    </div>
+                                <div class="col-md-6">
+                                    <select class="form-control">
+                                        <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
+                                        <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-
-                        <div role="tabpanel" class="tab-pane fade active in" id="biodata">
-                            <h3 class="box-title m-b-0">Biodata</h3>
-                            <br />
-                            <br />
-                            {{ csrf_field() }}
-                            <div class="col-md-6" style="padding-left: 0">
-                                <div class="form-group">
-                                    <label class="col-md-12">Name</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="name" style="text-transform: uppercase" class="form-control" value="{{ $data->name }}"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Employee Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="employee_number" class="form-control" value="{{ $data->employee_number }}"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Absensi Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="absensi_number" class="form-control" value="{{ $data->employee_number }}"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">NIK</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="nik" value="{{ $data->nik }}" class="form-control"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Ext</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="ext" value="{{ $data->ext }}" class="form-control"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">LDAP</label>
-                                    <div class="col-md-10">
-                                        <input type="number" name="ldap" value="{{ $data->ldap }}" class="form-control"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Place of Birth</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="tempat_lahir" value="{{ $data->tempat_lahir }}" class="form-control"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Date of Birth</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="tanggal_lahir" value="{{ $data->tanggal_lahir }}" class="form-control datepicker"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Marital Status</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="marital_status" value="{{ $data->marital_status }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Gender</label>
-                                    <div class="col-md-10">
-                                        <select class="form-control" name="jenis_kelamin" required>
-                                            <option value=""> - Gender - </option>
-                                            @foreach(['Laki-laki', 'Perempuan'] as $item)
-                                                <option {{ $data->jenis_kelamin == $item ? 'selected' : '' }}>{{ $item }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Blood Type</label>
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" value="{{ $data->blood_type }}" name="blood_type"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="example-email" class="col-md-12">Email</label>
-                                    <div class="col-md-10">
-                                        <input type="email" value="{{ $data->email }}" class="form-control" name="email" id="example-email"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Password</label>
-                                    <div class="col-md-12">
-                                        <input type="password" name="password" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Confirm Password</label>
-                                    <div class="col-md-12">
-                                        <input type="password" name="confirm" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Join Date</label>
-                                    <div class="col-md-12">
-                                        <input type="text" name="join_date" class="form-control datepicker" value="{{ ($data->join_date == '0000-00-00' ? '' : $data->join_date) }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-6">Employee Status</label>
-                                    <label class="col-md-6">Status Login</label>
-                                    <div class="col-md-6">
-                                        <select class="form-control" name="organisasi_status">
-                                            <option value="">- select - </option>
-                                            @foreach(['Permanent', 'Contract'] as $item)
-                                            <option {{ $data->organisasi_status == $item ? 'selected' : '' }}>{{ $item }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select class="form-control">
-                                            <option value="1" {{ $data->status == 1 ? 'selected' : '' }}>Active</option>
-                                            <option value="0" {{ $data->status == 0 ? 'selected' : '' }}>Inactive</option>
-                                        </select>
-                                    </div>
+                        <div class="col-md-6 pull-left" style="padding-left: 0">
+                            <div class="form-group">
+                                <label class="col-md-12">Telepon</label>
+                                <div class="col-md-12">
+                                    <input type="number" value="{{ $data->telepon }}" name="telepon" class="form-control"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Mobile 1</label>
+                                <div class="col-md-12">
+                                    <input type="number" value="{{ $data->mobile_1 }}" name="telepon" class="form-control"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Mobile 2</label>
+                                <div class="col-md-12">
+                                    <input type="number" value="{{ $data->mobile_2 }}" name="telepon" class="form-control"> </div>
+                            </div>
+                           <div class="form-group">
+                                <label class="col-md-12">Religion</label>
+                                <div class="col-md-12">
+                                    <select class="form-control" name="agama">
+                                        <option value=""> - Religion - </option>
+                                        @foreach(agama() as $item)
+                                            <option value="{{ $item }}" {{ $data->agama == $item ? 'selected' : '' }}> {{ $item }} </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-6" style="padding-left: 0">
-                                <div class="form-group">
-                                    <label class="col-md-12">Telepon</label>
-                                    <div class="col-md-12">
-                                        <input type="number" value="{{ $data->telepon }}" name="telepon" class="form-control"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Mobile 1</label>
-                                    <div class="col-md-12">
-                                        <input type="number" value="{{ $data->mobile_1 }}" name="telepon" class="form-control"> </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Mobile 2</label>
-                                    <div class="col-md-12">
-                                        <input type="number" value="{{ $data->mobile_2 }}" name="telepon" class="form-control"> </div>
-                                </div>
-                               <div class="form-group">
-                                    <label class="col-md-12">Religion</label>
-                                    <div class="col-md-12">
-                                        <select class="form-control" name="agama">
-                                            <option value=""> - Religion - </option>
-                                            @foreach(agama() as $item)
-                                                <option value="{{ $item }}" {{ $data->agama == $item ? 'selected' : '' }}> {{ $item }} </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-12">Current Address</label>
-                                    <div class="col-md-12">
-                                        <textarea class="form-control" name="alamat">{{ $data->current_address }}</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-12">ID Addres</label>
-                                    <div class="col-md-12">
-                                        <textarea class="form-control" name="id_address">{{ $data->id_address }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">ID City</label>
-                                    <div class="col-md-12">
-                                        <select class="form-control" name="id_city">
-                                            <option value="">- none - </option>
-                                            @foreach(get_kabupaten() as $item)
-                                            <option value="{{ $item->id_city }}" {{ $data->id_city == $item->id_kab ? 'selected' : '' }}>{{ $item->nama }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">ID Zip Code</label>
-                                    <div class="col-md-12">
-                                        <input type="text" name="id_zip_code" class="form-control" value="{{ $data->id_zip_code }}" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Foto</label>
-                                    <div class="col-md-12">
-                                        <input type="file" name="foto" class="form-control" />
-                                        @if(!empty($data->foto))
-                                        <img src="{{ asset('storage/foto/'. $data->foto) }}" style="width: 200px;" />
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">KTP Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="ktp_number" value="{{ $data->ktp_number }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">Passport Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="passport_number" value="{{ $data->passport_number }}" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">KK Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="kk_number" class="form-control" value="{{ $data->ktp_number }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">NPWP Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="npwp_number" class="form-control"  value="{{ $data->npwp_number }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-md-12">No BPJS Number</label>
-                                    <div class="col-md-10">
-                                        <input type="text" name="no_bpjs_number" value="{{ $data->bpjs_number }}" class="form-control">
-                                    </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Current Address</label>
+                                <div class="col-md-12">
+                                    <textarea class="form-control" name="alamat">{{ $data->current_address }}</textarea>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="col-md-12">ID Addres</label>
+                                <div class="col-md-12">
+                                    <textarea class="form-control" name="id_address">{{ $data->id_address }}</textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">ID City</label>
+                                <div class="col-md-12">
+                                    <select class="form-control" name="id_city">
+                                        <option value="">- none - </option>
+                                        @foreach(get_kabupaten() as $item)
+                                        <option value="{{ $item->id_city }}" {{ $data->id_city == $item->id_kab ? 'selected' : '' }}>{{ $item->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">ID Zip Code</label>
+                                <div class="col-md-12">
+                                    <input type="text" name="id_zip_code" class="form-control" value="{{ $data->id_zip_code }}" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Foto</label>
+                                <div class="col-md-12">
+                                    <input type="file" name="foto" class="form-control" />
+                                    @if(!empty($data->foto))
+                                    <img src="{{ asset('storage/foto/'. $data->foto) }}" style="width: 200px;" />
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">KTP Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="ktp_number" value="{{ $data->ktp_number }}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Passport Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="passport_number" value="{{ $data->passport_number }}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">KK Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="kk_number" class="form-control" value="{{ $data->ktp_number }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">NPWP Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="npwp_number" class="form-control"  value="{{ $data->npwp_number }}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">No BPJS Number</label>
+                                <div class="col-md-10">
+                                    <input type="text" name="no_bpjs_number" value="{{ $data->bpjs_number }}" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="dependent">
+                    <div class="card-body">
+                        <div class="row">
+                            <button type="button" class="btn btn-info btn-sm" id="btn_modal_dependent"><i class="fa fa-plus"></i> Add</button>
                             <div class="clearfix"></div>
-                        </div>
-
-                        <div role="tabpanel" class="tab-pane fade" id="dependent">
-                            <h3 class="box-title m-b-0">Dependent</h3><a class="btn btn-info btn-sm" id="btn_modal_dependent"><i class="fa fa-plus"></i> Tambah</a>
-                            <br />
-                            <br />
+                            <br>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -529,65 +513,61 @@
                                 </table>
                             </div>
                         </div>
-                         <div role="tabpanel" class="tab-pane fade" id="education">
-                            <h3 class="box-title m-b-0">Education</h3><a class="btn btn-info btn-sm" id="btn_modal_education"><i class="fa fa-plus"></i> Tambah</a>
-                            <br />
-                            <br />
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Pendidikan</th>
-                                            <th>Tahun Awal</th>
-                                            <th>Tahun Akhir</th>
-                                            <th>Nama Sekolah / Fakultas</th>
-                                            <th>Jurusan</th>
-                                            <th>Nilai</th>
-                                            <th>City</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="education_table">
-                                        @foreach($data->userEducation as $no => $item)
-                                        <tr>
-                                            <td>{{ $no+1 }}</td>
-                                            <td>{{ $item->pendidikan }}</td>
-                                            <td>{{ $item->tahun_awal }}</td>
-                                            <td>{{ $item->tahun_akhir }}</td>
-                                            <td>{{ $item->fakultas }}</td>
-                                            <td>{{ $item->jurusan }}</td>
-                                            <td>{{ $item->nilai }}</td>
-                                            <td>{{ $item->kota }}</td>
-                                            <td>
-                                                <a class="btn btn-default btn-xs" onclick="edit_education({{ $item->id }}, '{{ $item->pendidikan }}', '{{ $item->tahun_awal }}', '{{ $item->tahun_akhir }}', '{{ $item->fakultas }}', '{{ $item->jurusan }}', '{{ $item->nilai }}', '{{ $item->kota }}')"><i class="fa fa-edit"></i></a>
-                                                <a href="{{ route('administrator.karyawan.delete-education', $item->id) }}" onclick="return confirm('Hapus data ini?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table><br /><br />
-                            </div>
-                        </div>
-
                     </div>
-
-                    <a href="{{ route('administrator.karyawan.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
-                    <button type="submit" class="btn btn-sm btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Simpan Data Karyawan</button>
-                    <br style="clear: both;" />
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="education">
+                  <div class="card-body"> 
+                    <button class="btn btn-info btn-sm" id="btn_modal_education">Add</button>
                     <div class="clearfix"></div>
+                    <br />
+                    <div class="table-responsive">
+                        <table class="data-table table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Pendidikan</th>
+                                    <th>Tahun Awal</th>
+                                    <th>Tahun Akhir</th>
+                                    <th>Nama Sekolah / Fakultas</th>
+                                    <th>Jurusan</th>
+                                    <th>Nilai</th>
+                                    <th>City</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="education_table">
+                                @foreach($data->userEducation as $no => $item)
+                                <tr>
+                                    <td>{{ $no+1 }}</td>
+                                    <td>{{ $item->pendidikan }}</td>
+                                    <td>{{ $item->tahun_awal }}</td>
+                                    <td>{{ $item->tahun_akhir }}</td>
+                                    <td>{{ $item->fakultas }}</td>
+                                    <td>{{ $item->jurusan }}</td>
+                                    <td>{{ $item->nilai }}</td>
+                                    <td>{{ $item->kota }}</td>
+                                    <td>
+                                        <a class="btn btn-default btn-xs" onclick="edit_education({{ $item->id }}, '{{ $item->pendidikan }}', '{{ $item->tahun_awal }}', '{{ $item->tahun_akhir }}', '{{ $item->fakultas }}', '{{ $item->jurusan }}', '{{ $item->nilai }}', '{{ $item->kota }}')"><i class="fa fa-edit"></i></a>
+                                        <a href="{{ route('administrator.karyawan.delete-education', $item->id) }}" onclick="return confirm('Hapus data ini?')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table><br /><br />
+                    </div>
+                  </div>
                 </div>
             </div>
-
-        </form>                    
-    </div>
-    <!-- /.row -->
-    <!-- ============================================================== -->
-</div>
-    <!-- /.container-fluid -->
-    @extends('layouts.footer')
-</div>
-
+            <hr />
+            <a href="{{ route('administrator.karyawan.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
+            <button type="submit" class="btn btn-sm btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Simpan Data Karyawan</button>
+            <br style="clear: both;" />
+            <div class="clearfix"></div>
+        </div>
+        </div>
+    </form>   
+<!-- /.row -->
+<!-- ============================================================== -->
 
 <!-- modal content dependent  -->
 <div id="modal_dependent" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

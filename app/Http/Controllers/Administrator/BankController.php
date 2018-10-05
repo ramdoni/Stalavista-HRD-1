@@ -76,7 +76,7 @@ class BankController extends Controller
         $data = Bank::where('id', $id)->first();
         $data->delete();
 
-        return redirect()->route('administrator.bank.index')->with('message-sucess', 'Data berhasi di hapus');
+        return redirect()->route('administrator.bank.index')->with('message-success', 'Data deleted');
     } 
 
     /**
