@@ -263,37 +263,36 @@ data-open="click" data-menu="vertical-compact-menu" data-col="2-columns">
         </li>
 
         @if(cek_approval_user())
-        <li>
+        <li class="nav-item">
             <a href="javascript:void(0)" class="waves-effect">
-                <i class="mdi mdi-account-check fa-fw"></i> <span class="hide-menu atas">Management Approval (Assign)<span class="fa arrow"></span></span>
+                <i class="la la-users"></i> Management Approval (Assign)
                 @if(cek_overtime_approval_user_2() > 0 || count_approval_payment_request() > 0 || count_approval_medical_karyawan('null') > 0 || count_approval_training('null') > 0 )
-                    <div class="notify" style="position: absolute;top: 61px;right: 10px;"> <span class="heartbit"></span> <span class="point"></span> </div>
+                    <!-- <div class="notify" style="position: absolute;top: 61px;right: 10px;"> <span class="heartbit"></span> <span class="point"></span> </div> -->
                 @endif
             </a>
-            <ul class="nav nav-second-level">
+            <ul class="menu-content">
             @foreach(list_approval_user() as $item)
                 <?php if($item['link'] == 'training_mengetahui') { continue; } ?>
                 <li>
-                    <a href="{{ route('karyawan.approval.'.  $item['link'].'.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">{{ $item['nama_menu'] }}</span>
-                        
+                    <a href="{{ route('karyawan.approval.'.  $item['link'].'.index') }}">{{ $item['nama_menu'] }}
                         @if($item['link'] == 'cuti')
-                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_cuti_approved_personalia() }}</label>
+                          <span class="badge badge badge-pill badge-danger float-right mr-2">{{ count_cuti_approved_personalia() }}</span>
                         @endif
 
                         @if($item['link'] == 'overtime')
-                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{cek_overtime_approval_user_2()}}</label>
+                          <span class="badge badge badge-pill badge-danger float-right mr-2">{{cek_overtime_approval_user_2()}}</span>
                         @endif
                         
                         @if($item['link'] =='payment_request')
-                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_approval_payment_request() }}</label>
+                          <span class="badge badge badge-pill badge-danger float-right mr-2">{{ count_approval_payment_request() }}</span>
                         @endif
 
                         @if($item['link'] =='medical')
-                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_approval_medical_karyawan('null') }}</label>
+                          <span class="badge badge badge-pill badge-danger float-right mr-2">{{ count_approval_medical_karyawan('null') }}</span>
                         @endif
 
                         @if($item['link'] =='training')
-                            <label class="btn btn-danger btn-xs" style="position: absolute;right:10px; top: 10px;">{{ count_approval_training('null') }}</label>
+                          <span class="badge badge badge-pill badge-danger float-right mr-2">{{ count_approval_training('null') }}</span>
                         @endif
                     </a>
                 </li>
@@ -301,6 +300,57 @@ data-open="click" data-menu="vertical-compact-menu" data-col="2-columns">
             </ul>
         </li>
     @endif
+
+      <li class="nav-item">
+            <a href="javascript:void(0)" class="waves-effect">
+                <i class="la la-check"></i> <span class="hide-menu">Management Approval (Superior)<span class="fa arrow"></span></span>
+            </a>
+                @if(cek_cuti_approval_user(\Auth::user()->id, 'null') > 0 ||  cek_overtime_approval_user_count(\Auth::user()->id) > 0 || count_medical_approval_atasan('null') > 0 || count_exit_approval_user(\Auth::user()->id) > 0 || count_training_approval_atasan('null') > 0)    
+                    <!-- <div class="notify" style="position: absolute;top: 61px;right: 10px;"> <span class="heartbit"></span> <span class="point"></span> </div> -->
+                @endif
+            <ul class="menu-content">
+                @if(cek_cuti_approval_user(\Auth::user()->id, 'null') > 0)
+                <li>
+                    <a class="menu-item" href="{{ route('karyawan.approval.cuti-atasan.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">Leave Employee</span> 
+                        <span class="badge badge badge-pill badge-danger float-right mr-2">{{cek_cuti_approval_user(\Auth::user()->id, 'null')}}</span>
+                    </a>
+                </li>
+                @endif
+
+                @if(cek_overtime_approval_user(\Auth::user()->id) > 0)
+                <li>
+                    <a class="menu-item" href="{{ route('karyawan.approval.overtime-atasan.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">Overtime Sheet</span>
+                        <span class="badge badge badge-pill badge-danger float-right mr-2">{{cek_overtime_approval_user_count(\Auth::user()->id)}}</span>
+                    </a>
+                </li>
+                @endif
+
+                @if(count_medical_approval_atasan('all') > 0)
+                <li>
+                    <a class="menu-item" href="{{ route('karyawan.approval.medical-atasan.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">Medical Reimbursement</span>
+                        <span class="badge badge badge-pill badge-danger float-right mr-2">{{count_medical_approval_atasan('null')}}</span>
+                    </a>
+                </li>
+                @endif
+
+                @if(cek_exit_approval_user(\Auth::user()->id) > 0)
+                <li>
+                    <a class="menu-item" href="{{ route('karyawan.approval.exit-atasan.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">Exit Interview & Exit Clearance</span>
+                        <span class="badge badge badge-pill badge-danger float-right mr-2">{{count_exit_approval_user(\Auth::user()->id)}}</span>
+                    </a>
+                </li>
+                @endif
+
+                @if(count_training_approval_atasan('all') > 0)
+                <li>
+                    <a class="menu-item" href="{{ route('karyawan.approval.training-atasan.index') }}"><i class="ti-check-box fa-fw"></i><span class="hide-menu">Training & Business Trip</span>
+                        <span class="badge badge badge-pill badge-danger float-right mr-2">{{count_training_approval_atasan('null')}}</span>
+                    </a>
+                </li>
+                @endif
+            </ul>
+        </li>
+
     
       </ul>
     </div>

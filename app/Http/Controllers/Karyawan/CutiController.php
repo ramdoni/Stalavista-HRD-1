@@ -115,7 +115,7 @@ class CutiController extends Controller
         $params['data']     = $data;
         $params['text']     = '<p><strong>Dear Bapak/Ibu '. $data->atasan->name .'</strong>,</p> <p> '. $data->user->name .'  / '.  $data->user->nik .' mengajukan Cuti butuh persetujuan Anda.</p>';
 
-        \Mail::send('email.cuti-approval', $params,
+        \Mail::send('email.cuti-approval', $params, 
             function($message) use($data) {
                 $message->from('services@stalavista.com');
                 $message->to($data->user->email);

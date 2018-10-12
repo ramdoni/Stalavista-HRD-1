@@ -1,5 +1,5 @@
 @extends('email.general')
-
+@section('title', 'Leave Employee Submission')
 @section('content')
 {!! $text !!}
 

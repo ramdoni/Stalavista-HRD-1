@@ -19,63 +19,6 @@ class SettingController extends Controller
         return view('administrator.setting.index')->with($params);
     }
 
-     /**
-     * [create description]
-     * @return [type] [description]
-     */
-    public function create()
-    {
-        return view('administrator.setting.create');
-    }
-
-    /**
-     * [edit description]
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function edit($id)
-    {
-        $data['data']   = Setting::where('id', $id)->first();;
-        
-        return view('administrator.setting.edit')->with($data);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request,[
-            'key'              => 'required',
-            'value'              => 'required',
-        ]);
-        
-        $data               = Setting::where('id', $id)->first();
-        $data->key         = $request->key;
-        $data->value         = $request->value;
-        $data->save();
-
-        return redirect()->route('administrator.setting.index')->with('message-success', 'Data berhasil disimpan'); 
-    }
-
-
-    /**
-     * [desctroy description]
-     * @param  [type] $id [description]
-     * @return [type]     [description]
-     */
-    public function destroy($id)
-    {
-        $data = Setting::where('id', $id)->first();
-        $data->delete();
-
-        return redirect()->route('administrator.setting.index')->with('message-sucess', 'Data berhasi di hapus');
-    }
-
    /**
     * Store a newly created resource in storage.
     *
@@ -84,16 +27,45 @@ class SettingController extends Controller
     */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'key'              => 'required',
-            'value'              => 'required',
-        ]);
-        
-        $data               =  new Setting();
-        $data->key          = $request->key;
-        $data->value        = $request->value;
-        $data->save();
+        foreach($request->key as $k => $v)
+        {
+            $data = Setting::where('key', $k)->first();
+            $data->value        = $v;
+            $data->save();
+        }
 
-        return redirect()->route('administrator.setting.index')->with('message-success', 'Data berhasil disimpan'); 
+        if ($request->hasFile('logo'))
+        {
+            $data = Setting::where('key', 'logo')->first();
+            
+            $file = $request->file('logo');
+            $fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
+
+            $destinationPath = public_path('/storage/logo/');
+            $file->move($destinationPath, $fileName);
+
+            $v = $fileName;
+            
+            $data->value        = $v;
+            $data->save();
+        }
+
+        if ($request->hasFile('favicon'))
+        {
+            $data = Setting::where('key', 'favicon')->first();
+            
+            $file = $request->file('favicon');
+            $fileName = md5($file->getClientOriginalName() . time()) . "." . $file->getClientOriginalExtension();
+
+            $destinationPath = public_path('/storage/favicon/');
+            $file->move($destinationPath, $fileName);
+
+            $v = $fileName;
+            
+            $data->value        = $v;
+            $data->save();
+        }
+
+        return redirect()->route('administrator.setting.index')->with('message-success', 'Setting Updated'); 
    }
 }

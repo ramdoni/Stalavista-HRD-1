@@ -1,75 +1,69 @@
 @extends('layouts.administrator')
 
-@section('title', 'Setting Approval Overtime - PT. Arthaasia Finance')
+@section('title', 'Approval Overtime')
 
-@section('sidebar')
+@section('page-url', route('administrator.setting-payment-request.index'))
 
-@endsection
-
-@section('content')
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Setting Approval Overtime</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Setting</li>
-                </ol>
+@section('content-2')
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Direktur</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-manager-hr"><i class="la la-plus"></i></a></li>
+              </ul>
             </div>
-            <!-- /.col-lg-12 -->
-        </div>
-        <!-- .row -->
-        <div class="row"> 
-            <div class="col-md-4">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0 pull-left">Direktur</h3>
-                    <a class="btn btn-info btn-xs pull-right add-manager-hr"><i class="fa fa-plus"></i> Tambah</a>
-                    <div class="clearfix"></div>
-                    <br />
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="30" class="text-center">#</th>
-                                    <th>NAMA</th>
-                                    <th>JABATAN</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($manager_hr as $no =>  $item)
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NIK / NAMA</th>
+                                <th>JABATAN / DEPARTMENT</th>
+                                <th>#</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                             @foreach($manager_hr as $no =>  $item)
                                 <tr>
                                     <td>{{ ($no + 1) }}</td>
                                     <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
                                     <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name : '' }}</td>
                                     <td>
-                                        <form action="{{ route('administrator.setting-overtime.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
+                                        <a href="{{ route('administrator.setting-overtime.destroy', $item->id) }}" class="text-danger"><i class="la la-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> 
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 
-            <div class="col-md-4">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0 pull-left">HR Benefit</h3>
-                    <a class="btn btn-info btn-xs pull-right add-hr-operation"><i class="fa fa-plus"></i> Tambah</a>
-                    <div class="clearfix"></div>
-                    <br />
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">HR Benefit</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-hr-operation"><i class="la la-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
                                     <th width="30" class="text-center">#</th>
@@ -85,29 +79,20 @@
                                     <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
                                     <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name : ''  }}</td>
                                     <td>
-                                        <form action="{{ route('administrator.setting-overtime.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
+                                        <a href="{{ route('administrator.setting-overtime.destroy', $item->id) }}" class="text-danger"><i class="la la-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>                      
+                </section>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- /.row -->
-        <!-- ============================================================== -->
     </div>
-    <!-- /.container-fluid -->
-   @include('layouts.footer')
 </div>
-<!-- ============================================================== -->
-<!-- End Page Content -->
-<!-- ============================================================== -->
+
 <!-- sample modal content -->
 <div id="modal_hr_operation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width">
-  <title>NoticeLab 03 | Email Template</title>
+  <title>{{ get_setting('title') }}</title>
   <style type="text/css">
     /*////// RESET STYLES //////*/
     body{height:100% !important; margin:0; padding:0; width:100% !important;}
@@ -120,7 +120,7 @@
               <tbody><tr>
                 <td mc:edit="text101" class="text_color_282828" style="line-height: 1;color: #282828; font-size: 18px; font-weight: 600; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
                   <div class="editable-text">
-                    <span class="text_container">Leave Submission</span>
+                    <span class="text_container">@yield('title')</span>
                   </div>
                 </td>
               </tr><!-- END email heading -->
@@ -132,7 +132,7 @@
               <tr>
                 <td mc:edit="text102" class="text_color_c6c6c6" style="line-height: 1.8;color: #c6c6c6; font-size: 14px; font-weight: 400; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
                   <div class="editable-text">
-                    <span class="text_container" style="color: #5d5c5c;">M DANIL ARIPIN / 1807.0996.0129.0689 mengajukan Cuti butuh persetujuan Anda</span>
+                    <span class="text_container" style="color: #5d5c5c;">@yield('content')</span>
                   </div>
                 </td>
               </tr><!-- END email details -->
@@ -185,30 +185,7 @@
                     <tr><td height="20"></td></tr>
                   </tbody></table><!-- END column-2 -->
 
-                  <!-- column-3 -->
-                  <table class="table1-3" align="right" border="0" cellpadding="0" cellspacing="0">
-                    <!-- margin-top -->
-                    <tbody><tr><td height="20"></td></tr>
-
-                    <tr>
-                      <td>
-                        <table class="button_bg_color_93c054" bgcolor="#93c054" width="150" height="45" align="center" border="0" cellpadding="0" cellspacing="0" style="border-radius:5px; border-collapse: separate">
-                          <tbody><tr>
-                            <td mc:edit="text105" align="center" valign="middle" style="font-size: 14px; font-weight: 400; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
-                              <div class="editable-text">
-                                <span class="text_container">
-                                  <a href="#" class="text_color_ffffff" style="text-decoration: none; color: #ffffff;">Approve</a>
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody></table>
-                      </td>
-                    </tr>
-
-                    <!-- margin-bottom -->
-                    <tr><td height="20"></td></tr>
-                  </tbody></table><!-- END column-3 -->
+                  
                 </td>
               </tr>
 
@@ -238,7 +215,7 @@
                             <td mc:edit="text106" align="center" valign="middle" style="font-size: 14px; font-weight: 400; font-family: 'Open Sans', Helvetica, sans-serif; mso-line-height-rule: exactly;">
                               <div class="editable-text">
                                 <span class="text_container">
-                                  <a href="#" class="text_color_ffffff" style="text-decoration: none; color: #ffffff;">Sign In</a>
+                                  <a href="{{ route('login') }}" class="text_color_ffffff" style="text-decoration: none; color: #ffffff;">Sign In</a>
                                 </span>
                               </div>
                             </td>

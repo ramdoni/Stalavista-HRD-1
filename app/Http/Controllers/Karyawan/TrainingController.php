@@ -339,10 +339,10 @@ class TrainingController extends Controller
             function($message) use($data) {
                 $message->from('services@asiafinance.com');
                 $message->to($data->user->email);
-                $message->subject('PT. Arthaasia Finance - Pengajuan Training dan Perjalanan Dinas');
+                $message->subject(get_setting('title') .' - Training & Business Trip Submission');
             }
         );
 
-        return redirect()->route('karyawan.training.index')->with('message-success', 'Payment Request berhasil di proses');
+        return redirect()->route('karyawan.training.index')->with('message-success', 'Training & Business Trip submited');
     }
 }

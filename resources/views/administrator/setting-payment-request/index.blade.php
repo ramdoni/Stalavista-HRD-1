@@ -2,125 +2,137 @@
 
 @section('title', 'Payment Request Approval')
 
-@section('sidebar')
-
-@endsection
-
-@section('page-title', 'Payment Request')
-
 @section('page-url', route('administrator.setting-payment-request.index'))
 
 @section('content-2')
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-xl-6">
         <div class="card">
-                <div class="card-content collapse show">
-                  <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="30" class="text-center">#</th>
-                                    <th>NIK / NAMA</th>
-                                    <th>JABATAN / DEPARTMENT</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($approval as $no =>  $item)
-                                <tr>
-                                    <td>{{ ($no + 1) }}</td>
-                                    <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
-                                    <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name . ' / '. $item->user->department->name : '' }}</td>
-                                    <td>
-                                        <form action="{{ route('administrator.setting-payment-request.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+          <div class="card-header">
+            <h4 class="card-title">Proposal Approval</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-approval"><i class="la la-plus"></i></a></li>
+              </ul>
             </div>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NIK / NAMA</th>
+                                <th>JABATAN / DEPARTMENT</th>
+                                <th>#</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            @foreach($approval as $no =>  $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name . ' / '. $item->user->department->name : '' }}</td>
+                                <td>
+                                    <a href="{{ route('administrator.setting-payment-request.destroy', $item->id) }}" onclick="return confirm('Delete this data ?')" class="text-danger"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="white-box">
-            <h3 class="box-title m-b-0 pull-left">Proposal Verification</h3>
-            <a class="btn btn-info btn-xs pull-right add-verification"><i class="fa fa-plus"></i> Tambah</a>
-            <div class="clearfix"></div>
-            <br />
-            <div class="table-responsive">
-                <table class="table display nowrap" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th width="30" class="text-center">#</th>
-                            <th>NIK / NAMA</th>
-                            <th>JABATAN / DEPARTMENT</th>
-                            <th>#</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($verification as $no =>  $item)
-                        <tr>
-                            <td>{{ ($no + 1) }}</td>
-                            <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
-                            <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name . ' / '. $item->user->department->name : '' }}</td>
-                            <td>
-                                <form action="{{ route('administrator.setting-payment-request.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}                                               
-                                    <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Proposal Verification</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-verification"><i class="la la-plus"></i></a></li>
+              </ul>
             </div>
-        </div>
-    </div>   
-    <div class="col-md-4">
-        <div class="white-box">
-            <h3 class="box-title m-b-0 pull-left">Payment Approval</h3>
-            <a class="btn btn-info btn-xs pull-right add-payment"><i class="fa fa-plus"></i> Tambah</a>
-            <div class="clearfix"></div>
-            <br />
-            <div class="table-responsive">
-                <table class="table display nowrap" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th width="30" class="text-center">#</th>
-                            <th>NIK / NAMA</th>
-                            <th>JABATAN / DEPARTMENT</th>
-                            <th>#</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($payment as $no =>  $item)
-                        <tr>
-                            <td>{{ ($no + 1) }}</td>
-                            <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
-                            <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name . ' / '. $item->user->department->name : '' }}</td>
-                            <td>
-                                <form action="{{ route('administrator.setting-payment-request.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}                                               
-                                    <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                </form>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NIK / NAMA</th>
+                                <th>JABATAN / DEPARTMENT</th>
+                                <th>#</th>
+                            </tr>
+                        </thead> 
+                        <tbody>
+                            @foreach($verification as $no =>  $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name . ' / '. $item->user->department->name : '' }}</td>
+                                <td>
+                                    <a href="{{ route('administrator.setting-payment-request.destroy', $item->id) }}" onclick="return confirm('Delete this data ?')" class="text-danger"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
             </div>
+          </div>
         </div>
-    </div>                        
+    </div>
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Payment Approval</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-payment"><i class="la la-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                    <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NIK / NAMA</th>
+                                <th>JABATAN / DEPARTMENT</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($payment as $no =>  $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name . ' / '. $item->user->department->name : '' }}</td>
+                                <td>
+                                    <a href="route('administrator.setting-payment-request.destroy', $item->id)" onclick="return confirm('Delete this data ?')" class="text-danger"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
 
 <!-- ============================================================== -->
@@ -136,17 +148,19 @@
                 <div class="modal-body">
                    <form class="form-horizontal">
                        <div class="form-group">
-                            <label class="col-md-3">Pilih </label>
-                            <div class="col-md-6">
-                                <input type="text" class="form-control autocomplete-approval">
-                                <input type="hidden" class="modal_approval_id" />
+                            <div class="row">
+                                <label class="col-md-3">Pilih </label>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control autocomplete-approval">
+                                    <input type="hidden" class="modal_approval_id" />
+                                </div>
                             </div>
                        </div>
                    </form>
                 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default waves-effect btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info btn-sm" id="add_modal_approval">Tambah</button>
+                <button type="button" class="btn btn-info btn-sm" id="add_modal_approval">Add</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -174,7 +188,7 @@
                 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default waves-effect btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info btn-sm" id="add_modal_verification">Tambah</button>
+                <button type="button" class="btn btn-info btn-sm" id="add_modal_verification">Add</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -188,7 +202,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">Tambah Payment Approval</h4> </div>
+                <h4 class="modal-title" id="myModalLabel">Add Payment Approval</h4> </div>
                 <div class="modal-body">
                    <form class="form-horizontal">
                        <div class="form-group">
@@ -202,7 +216,7 @@
                 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default waves-effect btn-sm" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info btn-sm" id="add_modal_payment">Tambah</button>
+                <button type="button" class="btn btn-info btn-sm" id="add_modal_payment">Add</button>
             </div>
         </div>
         <!-- /.modal-content -->

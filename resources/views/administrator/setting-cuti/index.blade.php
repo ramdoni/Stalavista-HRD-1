@@ -59,6 +59,7 @@
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
+</div>
 
 @section('footer-script')
 <script type="text/javascript">

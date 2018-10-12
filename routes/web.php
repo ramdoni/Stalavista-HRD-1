@@ -100,7 +100,6 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::post('ajax/get-karyawan-approval', 'AjaxController@getKaryawanApproval')->name('ajax.get-karyawan-approval');
 });
 
-
 // ROUTING KARYAWAN
 Route::group(['prefix' => 'karyawan', 'middleware' => ['auth', 'access:2']], function(){
 	
@@ -189,151 +188,133 @@ Route::group(['prefix' => 'karyawan', 'middleware' => ['auth', 'access:2']], fun
 });
 
 // ROUTING ADMINISTRATOR
-Route::group(['prefix' => 'administrator', 'middleware' => ['auth', 'access:1']], function(){
-	
-	Route::get('sendemail', function(){
+Route::group(['prefix' => 'administrator', 'namespace' => 'Administrator', 'middleware' => ['auth', 'access:1']], function(){
 
-		$objDemo = new \stdClass();
-        $objDemo->content = 'Demo One Value';
- 
-        \Mail::to("doni.enginer@gmail.com")->send(new \App\Mail\GeneralMail($objDemo));
-	});
-
-	$path = 'Administrator\\';
-
-	Route::get('/', $path . 'IndexController@index')->name('administrator.dashboard');
-	Route::get('profile', $path .'IndexController@profile')->name('administrator.profile');
-	Route::post('profile-update', $path .'IndexController@profileUpdate')->name('administrator.profile.update');
-	Route::resource('karyawan', $path . 'KaryawanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('department', $path . 'DepartmentController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('jabatan', $path . 'JabatanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('provinsi', $path . 'ProvinsiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('kabupaten', $path . 'KabupatenController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('kecamatan', $path . 'KecamatanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('kelurahan', $path . 'KelurahanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('training', $path . 'TrainingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('cuti', $path . 'CutiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('overtime', $path . 'OvertimeController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('payment-request', $path . 'PaymentRequestController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('exit-clearance', $path . 'ExitClearanceController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('exit-interview', $path . 'ExitInterviewController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('compassionate-reason', $path . 'CompassionateReasonController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('medical-reimbursement', $path . 'MedicalReimbursementController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('directorate', $path . 'DirectorateController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('division', $path . 'DivisionController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('section', $path . 'SectionController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('overtime', $path . 'OvertimeController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('cabang', $path . 'CabangController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('medical', $path . 'MedicalController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('bank', $path . 'BankController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('universitas', $path . 'UniversitasController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('program-studi', $path . 'ProgramStudiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('jurusan', $path . 'JurusanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('sekolah', $path . 'SekolahController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('payment-request-setting', $path . 'PaymentRequestSettingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('alasan-pengunduran-diri', $path . 'AlasanPengunduranDiriSettingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-		
-	Route::get('training/detail/{id}',  $path . 'TrainingController@detail')->name('administrator.training.detail');
-	Route::post('training/proses',  $path . 'TrainingController@proses')->name('administrator.training.proses');
-	Route::get('training/biaya/{id}',  $path . 'TrainingController@biaya')->name('administrator.training.biaya');
-	Route::post('training/proses-biaya',  $path . 'TrainingController@prosesBiaya')->name('administrator.training.proses-biaya');
-
-	Route::resource('setting-cuti', $path . 'SettingCutiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('setting-payment-request', $path . 'SettingPaymentRequestController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
-	Route::resource('setting-medical', $path . 'SettingMedicalController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
-	Route::resource('setting-overtime', $path . 'SettingOvertimeController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
-	Route::resource('setting-exit', $path . 'SettingExitController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
-	Route::resource('setting-training', $path . 'SettingTrainingController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
-	Route::resource('setting-master-cuti', $path . 'SettingMasterCutiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('setting-exit-clearance', $path . 'SettingExitClearanceController', ['as' => 'administrator']);
-	Route::resource('cuti-bersama', $path . 'CutiBersamaController', ['as' => 'administrator']);
-
-	Route::get('structure', $path .'IndexController@structure')->name('administrator.structure');
-	
-	Route::resource('setting', $path .'SettingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('news', $path .'NewsController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('internal-memo', $path .'InternalMemoController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('branch-organisasi', $path .'BranchOrganisasiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('branch-staff', $path .'BranchStaffController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('libur-nasional', $path .'LiburNasionalController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('plafond-dinas', $path .'PlafondDinasController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('position', $path .'PositionController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('job-rule', $path .'JobRuleController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::post('libur-nasional/import', $path .'LiburNasionalController@import')->name('administrator.libur-nasional.import');
-	Route::post('cabang/import', $path .'CabangController@import')->name('administrator.cabang.import');
-	Route::post('plafond-dinas/import', $path .'PlafondDinasController@import')->name('administrator.plafond-dinas.import');
-	Route::post('plafond-dinas/destroy-luar-negeri', $path .'PlafondDinasController@deleteLuarNegeri')->name('administrator.plafond-dinas.destroy-luar-negeri');
-	Route::post('plafond-dinas/edit-luar-negeri/{id}', $path .'PlafondDinasController@editLuarNegeri')->name('administrator.plafond-dinas.edit-luar-negeri');
-	
-	Route::get('branch-organisasi/tree', $path .'BranchOrganisasiController@tree')->name('administrator.branch-organisasi.tree');
-
-	Route::get('karyawan/delete-cuti/{id}', $path .'KaryawanController@DeleteCuti')->name('administrator.karyawan.delete-cuti');
-	Route::post('karyawan/import', $path .'KaryawanController@importData')->name('administrator.karyawan.import');
-	Route::get('karyawan/preview-import', $path .'KaryawanController@previewImport')->name('administrator.karyawan.preview-import');
-	Route::get('karyawan/delete-temp/{id}', $path .'KaryawanController@deleteTemp')->name('administrator.karyawan.delete-temp');
-	Route::get('karyawan/detail-temp/{id}', $path .'KaryawanController@detailTemp')->name('administrator.karyawan.detail-temp');
-	Route::get('karyawan/import-all', $path .'KaryawanController@importAll')->name('administrator.karyawan.import-all');
-	Route::get('karyawan/print-profile/{id}', $path .'KaryawanController@printProfile')->name('administrator.karyawan.print-profile');
-	Route::get('karyawan/delete-old-user/{id}', $path .'KaryawanController@deleteOldUser')->name('administrator.karyawan.delete-old-user');
-
-	Route::get('absensi/index', $path .'AbsensiController@index')->name('administrator.absensi.index');
-	Route::get('absensi/import', $path .'AbsensiController@import')->name('administrator.absensi.import');
-	Route::post('absensi/temp-import', $path .'AbsensiController@tempImport')->name('administrator.absensi.temp-import');
-	Route::get('absensi/preview-temp', $path .'AbsensiController@previewTemp')->name('administrator.absensi.preview-temp');
-	Route::get('absensi/import-all', $path .'AbsensiController@importAll')->name('administrator.absensi.import-all');
-	Route::get('absensi/deletenew/{id}', $path .'AbsensiController@deleteNew')->name('administrator.absensi.deletenew');
-	Route::get('absensi/deleteold/{id}', $path .'AbsensiController@deleteOld')->name('administrator.absensi.deleteold');
-	Route::post('cuti/batal', $path .'CutiController@batal')->name('administrator.cuti.batal');
-	Route::post('training/batal', $path .'TrainingController@batal')->name('administrator.training.batal');
-	Route::get('cuti/proses/{id}', $path .'CutiController@proses')->name('administrator.cuti.proses');
-	Route::post('cuti/submit-proses', $path .'CutiController@submitProses')->name('administrator.cuti.submit-proses');
-	Route::get('payment-request/batal/{id}', $path .'PaymentRequestController@batal')->name('administrator.payment-request.batal');
-
-	Route::get('exit-inteview/detail/{id}',  $path . 'ExitInterviewController@detail')->name('administrator.exit-interview.detail');
-	Route::post('exit-interview/proses',  $path . 'ExitInterviewController@proses')->name('administrator.exit-interview.proses');
-	Route::get('cuti/delete/{id}',  $path . 'CutiController@delete')->name('administrator.cuti.delete');
-	Route::get('setting-master-cuti/delete/{id}',  $path . 'SettingMasterCutiController@delete')->name('administrator.setting-master-cuti.delete');
-	Route::resource('peraturan-perusahaan', $path .'PeraturanPerusahaanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('payroll', $path .'PayrollController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-
-	Route::get('payroll/import', $path .'PayrollController@import')->name('administrator.payroll.import');
-	Route::get('payroll/download', $path .'PayrollController@download')->name('administrator.payroll.download');
-	Route::post('payroll/temp-import', $path .'PayrollController@tempImport')->name('administrator.payroll.temp-import');
-	Route::get('payroll-setting', $path .'PayrollSettingController@index')->name('administrator.payroll-setting.index');
-
-
-	// Payroll
-	Route::get('payroll-setting/add-pph', $path .'PayrollSettingController@addPPH')->name('administrator.payroll-setting.add-pph');
-	Route::get('payroll-setting/edit-ptkp/{id}', $path .'PayrollSettingController@editPtkp')->name('administrator.payroll-setting.edit-ptkp');
-	Route::get('payroll-setting/add-others', $path .'PayrollSettingController@addOthers')->name('administrator.payroll-setting.add-others');
-
-	Route::post('payroll-setting/store-pph', $path .'PayrollSettingController@storePPH')->name('administrator.payroll-setting.store-pph');
-	Route::post('payroll-setting/update-ptkp/{id}', $path .'PayrollSettingController@updatePtkp')->name('administrator.payroll-setting.update-ptkp');
-	Route::post('payroll-setting/store-others', $path .'PayrollSettingController@storeOthers')->name('administrator.payroll-setting.store-others');
-	Route::get('payroll/calculate', $path .'PayrollController@calculate')->name('administrator.payroll.calculate');
-	Route::get('payroll/detail/{id}', $path .'PayrollController@detail')->name('administrator.payroll.detail');
-
-	Route::resource('asset', $path .'AssetController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::resource('asset-type', $path .'AssetTypeController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
-	Route::get('karyawan/delete-dependent/{id}', $path.'KaryawanController@deleteDependent')->name('administrator.karyawan.delete-dependent');
-	Route::get('karyawan/delete-education/{id}', $path.'KaryawanController@deleteEducation')->name('administrator.karyawan.delete-education');
-	Route::get('karyawan/delete-inventaris/{id}', $path.'KaryawanController@deleteInventaris')->name('administrator.karyawan.delete-inventaris');
-	Route::get('karyawan/delete-inventaris-mobil/{id}', $path.'KaryawanController@deleteInventarisMobil')->name('administrator.karyawan.delete-inventaris-mobil');
-	Route::get('karyawan/delete-inventaris-lainnya/{id}', $path.'KaryawanController@deleteInventarisLainnya')->name('administrator.karyawan.delete-inventaris-lainnya');
-	Route::post('karyawan/change-status-karyawan', $path .'KaryawanController@changeStatusKaryawan')->name('administrator.karyawan.change-status-karyawan');
-	Route::post('karyawan/change-password-karyawan', $path .'KaryawanController@changePasswordKaryawan')->name('administrator.karyawan.change-password-karyawan');
-	Route::get('karyawan/autologin/{id}', $path .'KaryawanController@autologin')->name('administrator.karyawan.autologin');
-	Route::get('directorate/delete/{id}', $path . 'DirectorateController@delete')->name('administrator.directorate.delete');
-	Route::get('division/delete/{id}', $path . 'DivisionController@destroy')->name('administrator.division.delete');
-	Route::get('department/delete/{id}', $path . 'DepartmentController@destroy')->name('administrator.department.delete');
-	Route::get('position/delete/{id}', $path . 'PositionController@destroy')->name('administrator.position.delete');
-	Route::get('cabang/delete/{id}', $path . 'CabangController@destroy')->name('administrator.cabang.delete');
-	Route::get('bank/delete/{id}', $path . 'BankController@destroy')->name('administrator.bank.delete');
-	Route::get('alasan-pengunduran-diri/delete/{id}', $path . 'AlasanPengunduranDiriSettingController@destroy')->name('administrator.alasan-pengunduran-diri.delete');
-	Route::get('cuti-bersama/delete/{id}', $path . 'CutiBersamaController@destroy')->name('administrator.cuti-bersama.delete');
-	Route::get('libur-nasional/delete/{id}', $path . 'LiburNasionalController@destroy')->name('administrator.libur-nasional.delete');
-	Route::get('plafond-dinas/delete/{id}', $path . 'PlafondDinasController@destroy')->name('administrator.plafond-dinas.delete');
-	Route::get('universitas/delete/{id}', $path . 'UniversitasController@destroy')->name('administrator.universitas.delete');
-	Route::get('program-studi/delete/{id}', $path . 'ProgramStudiController@destroy')->name('administrator.program-studi.delete');
-	Route::get('setting-cuti/delete/{id}', $path . 'SettingCutiController@destroy')->name('administrator.setting-cuti.delete');
+	Route::get('/', 'IndexController@index')->name('administrator.dashboard');
+	Route::get('profile', 'IndexController@profile')->name('administrator.profile');
+	Route::post('profile-update', 'IndexController@profileUpdate')->name('administrator.profile.update');
+	Route::resource('karyawan', 'KaryawanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('department', 'DepartmentController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('jabatan', 'JabatanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('provinsi', 'ProvinsiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('kabupaten', 'KabupatenController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('kecamatan', 'KecamatanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('kelurahan', 'KelurahanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('training', 'TrainingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('cuti', 'CutiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('overtime', 'OvertimeController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('payment-request', 'PaymentRequestController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('exit-clearance', 'ExitClearanceController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('exit-interview', 'ExitInterviewController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('compassionate-reason', 'CompassionateReasonController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('medical-reimbursement', 'MedicalReimbursementController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('directorate', 'DirectorateController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('division', 'DivisionController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('section', 'SectionController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('overtime', 'OvertimeController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('cabang', 'CabangController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('medical', 'MedicalController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('bank', 'BankController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('universitas', 'UniversitasController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('program-studi', 'ProgramStudiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('jurusan', 'JurusanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('sekolah', 'SekolahController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('payment-request-setting', 'PaymentRequestSettingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('alasan-pengunduran-diri', 'AlasanPengunduranDiriSettingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::get('training/detail/{id}',  'TrainingController@detail')->name('administrator.training.detail');
+	Route::post('training/proses', 'TrainingController@proses')->name('administrator.training.proses');
+	Route::get('training/biaya/{id}', 'TrainingController@biaya')->name('administrator.training.biaya');
+	Route::post('training/proses-biaya', 'TrainingController@prosesBiaya')->name('administrator.training.proses-biaya');
+	Route::resource('setting-cuti', 'SettingCutiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('setting-payment-request', 'SettingPaymentRequestController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
+	Route::resource('setting-medical', 'SettingMedicalController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
+	Route::get('setting-medical/destroy/{id}', 'SettingMedicalController@destroy')->name('administrator.setting-medical.destroy');
+	Route::resource('setting-overtime', 'SettingOvertimeController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
+	Route::get('setting-overtime/destroy/{id}', 'SettingOvertimeController@destroy')->name('administrator.setting-overtime.destroy');
+	Route::resource('setting-exit', 'SettingExitController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
+	Route::resource('setting-training', 'SettingTrainingController', ['only'=> ['index','destroy'], 'as' => 'administrator']);
+	Route::get('setting-training/destroy/{id}', 'SettingTrainingController@destroy')->name('administrator.setting-training.destroy');
+	Route::resource('setting-master-cuti', 'SettingMasterCutiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('setting-exit-clearance', 'SettingExitClearanceController', ['as' => 'administrator']);
+	Route::get('setting-exit-clearance/destroy/{id}', 'SettingExitClearanceController@destroy')->name('administrator.setting-exit-clearance.destroy');
+	Route::resource('cuti-bersama', 'CutiBersamaController', ['as' => 'administrator']);
+	Route::get('structure', 'IndexController@structure')->name('administrator.structure');
+	Route::resource('setting', 'SettingController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('news', 'NewsController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('internal-memo', 'InternalMemoController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('branch-organisasi', 'BranchOrganisasiController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('branch-staff','BranchStaffController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('libur-nasional', 'LiburNasionalController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('plafond-dinas', 'PlafondDinasController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('position', 'PositionController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('job-rule', 'JobRuleController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::post('libur-nasional/import', 'LiburNasionalController@import')->name('administrator.libur-nasional.import');
+	Route::post('cabang/import', 'CabangController@import')->name('administrator.cabang.import');
+	Route::post('plafond-dinas/import', 'PlafondDinasController@import')->name('administrator.plafond-dinas.import');
+	Route::post('plafond-dinas/destroy-luar-negeri', 'PlafondDinasController@deleteLuarNegeri')->name('administrator.plafond-dinas.destroy-luar-negeri');
+	Route::post('plafond-dinas/edit-luar-negeri/{id}', 'PlafondDinasController@editLuarNegeri')->name('administrator.plafond-dinas.edit-luar-negeri');
+	Route::get('branch-organisasi/tree', 'BranchOrganisasiController@tree')->name('administrator.branch-organisasi.tree');
+	Route::get('karyawan/delete-cuti/{id}', 'KaryawanController@DeleteCuti')->name('administrator.karyawan.delete-cuti');
+	Route::post('karyawan/import', 'KaryawanController@importData')->name('administrator.karyawan.import');
+	Route::get('karyawan/preview-import', 'KaryawanController@previewImport')->name('administrator.karyawan.preview-import');
+	Route::get('karyawan/delete-temp/{id}', 'KaryawanController@deleteTemp')->name('administrator.karyawan.delete-temp');
+	Route::get('karyawan/detail-temp/{id}', 'KaryawanController@detailTemp')->name('administrator.karyawan.detail-temp');
+	Route::get('karyawan/import-all', 'KaryawanController@importAll')->name('administrator.karyawan.import-all');
+	Route::get('karyawan/print-profile/{id}', 'KaryawanController@printProfile')->name('administrator.karyawan.print-profile');
+	Route::get('karyawan/delete-old-user/{id}', 'KaryawanController@deleteOldUser')->name('administrator.karyawan.delete-old-user');
+	Route::get('absensi/index', 'AbsensiController@index')->name('administrator.absensi.index');
+	Route::get('absensi/import', 'AbsensiController@import')->name('administrator.absensi.import');
+	Route::post('absensi/temp-import', 'AbsensiController@tempImport')->name('administrator.absensi.temp-import');
+	Route::get('absensi/preview-temp', 'AbsensiController@previewTemp')->name('administrator.absensi.preview-temp');
+	Route::get('absensi/import-all', 'AbsensiController@importAll')->name('administrator.absensi.import-all');
+	Route::get('absensi/deletenew/{id}', 'AbsensiController@deleteNew')->name('administrator.absensi.deletenew');
+	Route::get('absensi/deleteold/{id}', 'AbsensiController@deleteOld')->name('administrator.absensi.deleteold');
+	Route::post('cuti/batal', 'CutiController@batal')->name('administrator.cuti.batal');
+	Route::post('training/batal', 'TrainingController@batal')->name('administrator.training.batal');
+	Route::get('cuti/proses/{id}', 'CutiController@proses')->name('administrator.cuti.proses');
+	Route::post('cuti/submit-proses', 'CutiController@submitProses')->name('administrator.cuti.submit-proses');
+	Route::get('payment-request/batal/{id}', 'PaymentRequestController@batal')->name('administrator.payment-request.batal');
+	Route::get('exit-inteview/detail/{id}', 'ExitInterviewController@detail')->name('administrator.exit-interview.detail');
+	Route::post('exit-interview/proses', 'ExitInterviewController@proses')->name('administrator.exit-interview.proses');
+	Route::get('cuti/delete/{id}',  'CutiController@delete')->name('administrator.cuti.delete');
+	Route::get('setting-master-cuti/delete/{id}', 'SettingMasterCutiController@delete')->name('administrator.setting-master-cuti.delete');
+	Route::resource('peraturan-perusahaan', 'PeraturanPerusahaanController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('payroll', 'PayrollController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::get('payroll/import', 'PayrollController@import')->name('administrator.payroll.import');
+	Route::get('payroll/download', 'PayrollController@download')->name('administrator.payroll.download');
+	Route::post('payroll/temp-import', 'PayrollController@tempImport')->name('administrator.payroll.temp-import');
+	Route::get('payroll-setting', 'PayrollSettingController@index')->name('administrator.payroll-setting.index');
+	Route::get('payroll-setting/add-pph', 'PayrollSettingController@addPPH')->name('administrator.payroll-setting.add-pph');
+	Route::get('payroll-setting/edit-ptkp/{id}', 'PayrollSettingController@editPtkp')->name('administrator.payroll-setting.edit-ptkp');
+	Route::get('payroll-setting/add-others', 'PayrollSettingController@addOthers')->name('administrator.payroll-setting.add-others');
+	Route::post('payroll-setting/store-pph', 'PayrollSettingController@storePPH')->name('administrator.payroll-setting.store-pph');
+	Route::post('payroll-setting/update-ptkp/{id}', 'PayrollSettingController@updatePtkp')->name('administrator.payroll-setting.update-ptkp');
+	Route::post('payroll-setting/store-others', 'PayrollSettingController@storeOthers')->name('administrator.payroll-setting.store-others');
+	Route::get('payroll/calculate', 'PayrollController@calculate')->name('administrator.payroll.calculate');
+	Route::get('payroll/detail/{id}', 'PayrollController@detail')->name('administrator.payroll.detail');
+	Route::resource('asset', 'AssetController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::resource('asset-type', 'AssetTypeController', ['only'=> ['index','create','store', 'edit','destroy','update'], 'as' => 'administrator']);
+	Route::get('karyawan/delete-dependent/{id}', 'KaryawanController@deleteDependent')->name('administrator.karyawan.delete-dependent');
+	Route::get('karyawan/delete-education/{id}', 'KaryawanController@deleteEducation')->name('administrator.karyawan.delete-education');
+	Route::get('karyawan/delete-inventaris/{id}', 'KaryawanController@deleteInventaris')->name('administrator.karyawan.delete-inventaris');
+	Route::get('karyawan/delete-inventaris-mobil/{id}', 'KaryawanController@deleteInventarisMobil')->name('administrator.karyawan.delete-inventaris-mobil');
+	Route::get('karyawan/delete-inventaris-lainnya/{id}', 'KaryawanController@deleteInventarisLainnya')->name('administrator.karyawan.delete-inventaris-lainnya');
+	Route::post('karyawan/change-status-karyawan', 'KaryawanController@changeStatusKaryawan')->name('administrator.karyawan.change-status-karyawan');
+	Route::post('karyawan/change-password-karyawan', 'KaryawanController@changePasswordKaryawan')->name('administrator.karyawan.change-password-karyawan');
+	Route::get('karyawan/autologin/{id}', 'KaryawanController@autologin')->name('administrator.karyawan.autologin');
+	Route::get('directorate/delete/{id}', 'DirectorateController@delete')->name('administrator.directorate.delete');
+	Route::get('division/delete/{id}', 'DivisionController@destroy')->name('administrator.division.delete');
+	Route::get('department/delete/{id}', 'DepartmentController@destroy')->name('administrator.department.delete');
+	Route::get('position/delete/{id}', 'PositionController@destroy')->name('administrator.position.delete');
+	Route::get('cabang/delete/{id}', 'CabangController@destroy')->name('administrator.cabang.delete');
+	Route::get('bank/delete/{id}', 'BankController@destroy')->name('administrator.bank.delete');
+	Route::get('alasan-pengunduran-diri/delete/{id}', 'AlasanPengunduranDiriSettingController@destroy')->name('administrator.alasan-pengunduran-diri.delete');
+	Route::get('cuti-bersama/delete/{id}', 'CutiBersamaController@destroy')->name('administrator.cuti-bersama.delete');
+	Route::get('libur-nasional/delete/{id}', 'LiburNasionalController@destroy')->name('administrator.libur-nasional.delete');
+	Route::get('plafond-dinas/delete/{id}', 'PlafondDinasController@destroy')->name('administrator.plafond-dinas.delete');
+	Route::get('universitas/delete/{id}', 'UniversitasController@destroy')->name('administrator.universitas.delete');
+	Route::get('program-studi/delete/{id}', 'ProgramStudiController@destroy')->name('administrator.program-studi.delete');
+	Route::get('setting-cuti/delete/{id}', 'SettingCutiController@destroy')->name('administrator.setting-cuti.delete');
+	Route::get('setting-payment-request/{id}', 'SettingPaymentRequestController@destroy')->name('administrator.setting-payment-request.destroy');
+	Route::get('internal-memo/destroy/{id}', 'InternalMemoController@destroy')->name('administrator.internal-memo.destroy');
 });

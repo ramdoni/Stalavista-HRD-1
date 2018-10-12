@@ -7,8 +7,7 @@
 @section('content')
 
 <form class="form-horizontal" autocomplete="off" onsubmit="return confirm('Submit Pengajuan Perjalanan Dinas / Training ?');" enctype="multipart/form-data" action="{{ route('karyawan.training.store') }}" method="POST">
-    <h3 class="box-title m-b-0">Training & Business Trip Form</h3>
-    <hr />
+    <h3 class="pb-2">Training & Business Trip Form</h3>
     @if (count($errors) > 0)
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -328,6 +327,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="clearfix"></div><br />
                     <div class="form-group">
                         <a href="{{ route('administrator.training.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
                         <a href="#pesawat" aria-controls="messages" role="tab" data-toggle="tab" aria-expanded="false" class="btn btn-info btn-sm next_">NEXT</a>
@@ -335,101 +335,118 @@
                 </div>
             </div>
         </div>
+
         <div role="tabpanel" class="tab-pane fade" id="pesawat">
-            <h4>Form Pemesanan</h4>
-            <hr />
-            <div class="form-group">
-                <label class="col-md-12">Pilihan Rute</label>
-                <div class="col-md-6">
-                    <label style="font-weight: normal;"><input type="radio" name="pesawat_perjalanan" value="Sekali Jalan"> Sekali Jalan</label> &nbsp;&nbsp;
-                    <label style="font-weight: normal;"><input type="radio" name="pesawat_perjalanan" value="Pulang Pergi"> Pulang Pergi</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-12">Tanggal / Waktu</label>
-                <div class="col-md-2">
-                    <input type="text" placeholder="Tanggal Berangkat" name="tanggal_berangkat" class="form-control" id="from_berangkat">
-                </div>
-                <div style="float: left; width: 5px;padding-top:10px;"> / </div>
-                <div class="col-md-1">
-                    <input type="text" class="form-control time_picker" placeholder="Waktu" name="waktu_berangkat" />
-                </div>
-                <div style="float: left; width: 5px;padding-top:10px;"> - </div>
+            <h4 class="card-title py-2 ">Form Pemesanan</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="row">
+                            <p class="col-md-12">Pilihan Rute</p>
+                            <div class="col-md-6">
+                                <label style="color:#6B6F82;font-weight: normal;"><input type="radio" name="pesawat_perjalanan" value="Sekali Jalan"> Sekali Jalan</label> &nbsp;&nbsp;
+                                <label style="color:#6B6F82;font-weight: normal;"><input type="radio" name="pesawat_perjalanan" value="Pulang Pergi"> Pulang Pergi</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <p class="col-md-12">Tanggal / Waktu</p>
+                            <div class="col-md-2">
+                                <input type="text" placeholder="Tanggal Berangkat" name="tanggal_berangkat" class="form-control" id="from_berangkat">
+                            </div>
+                            <div style="float: left; width: 5px;padding-top:10px;"> / </div>
+                            <div class="col-md-1">
+                                <input type="text" class="form-control time_picker" placeholder="Waktu" name="waktu_berangkat" />
+                            </div>
+                            <div style="float: left; width: 5px;padding-top:10px;"> - </div>
 
-                <div class="col-md-2"><input type="text" placeholder="Tanggal Pulang" name="tanggal_pulang" readonly="true" class="form-control" id="to_berangkat">
-                </div>
-                <div style="float: left; width: 5px;padding-top:10px;"> / </div>
-                 <div class="col-md-1">
-                    <input type="text" class="form-control time_picker" placeholder="Waktu" readonly="true" name="waktu_pulang" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-3">Dari Bandara</label>
-                <label class="col-md-3">Tujuan Bandara</label>
-                <div class="clearfix"></div>
-                <div class="col-md-3">
-                    <input type="text" name="pesawat_rute_dari" class="form-control" id="rute_dari" placeholder="Rute Dari">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="pesawat_rute_tujuan" class="form-control" id="rute_tujuan" placeholder="Rute Tujuan">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-12">Informasi Penumpang</label>
-                <div class="col-md-6">
-                    <table class="table table-bordered custome_table">
-                        <thead>
-                            <tr>
-                                <th>NIK</th>
-                                <th>NO KTP</th>
-                                <th>NO Passport</th>
-                                <th>Jenis Kelamin</th>
-                                <th>NO Telepon</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-penumpang">
-                            <tr>
-                                <td>{{ Auth::user()->name .' / '.Auth::user()->nik }}</td>
-                                <td>{{ Auth::user()->ktp_number }}</td>
-                                <td>{{ Auth::user()->passport_number }}</td>
-                                <td>{{ Auth::user()->jenis_kelamin }}</td>
-                                <td>
-                                    <input type="text" name="no_telpon" class="form-control" value="{{ Auth::user()->telepon }}" placeholder="No Telepon" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-2">Kelas</label>
-                <label class="col-md-10">Maskapai</label>
-                <div class="col-md-2">
-                    <label style="font-weight: normal;"><input type="radio" name="pesawat_kelas" value="Ekonomi" /> Ekonomi </label> 
-                    <label style="font-weight: normal;"><input type="radio" name="pesawat_kelas" value="Bisnis" /> Bisnis </label> 
-                </div>
-                <div class="col-md-6"> 
-                    <input type="text" class="form-control" name="pesawat_maskapai" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-12">Pergi Bersama</label>
-                <div class="col-md-8"> 
-                    <input type="text" class="form-control" name="pergi_bersama" placeholder="Type here.." />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-md-12">Note</label>
-                <div class="col-md-8"> 
-                    <input type="text" class="form-control" name="note" placeholder="Type here.." />
-                </div>
-            </div>
+                            <div class="col-md-2"><input type="text" placeholder="Tanggal Pulang" name="tanggal_pulang" readonly="true" class="form-control" id="to_berangkat">
+                            </div>
+                            <div style="float: left; width: 5px;padding-top:10px;"> / </div>
+                             <div class="col-md-1">
+                                <input type="text" class="form-control time_picker" placeholder="Waktu" readonly="true" name="waktu_pulang" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p>Dari Bandara</p>
+                                <input type="text" name="pesawat_rute_dari" class="form-control" id="rute_dari" placeholder="Rute Dari">
+                            </div>
+                            <div class="col-md-4">
+                                <p>Tujuan Bandara</p>
+                                <input type="text" name="pesawat_rute_tujuan" class="form-control" id="rute_tujuan" placeholder="Rute Tujuan">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <p class="col-md-12">Informasi Penumpang</p>
+                            <div class="col-md-6">
+                                <table class="table table-bordered custome_table">
+                                    <thead>
+                                        <tr>
+                                            <th>NIK</th>
+                                            <th>NO KTP</th>
+                                            <th>NO Passport</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>NO Telepon</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-penumpang">
+                                        <tr>
+                                            <td>{{ Auth::user()->name .' / '.Auth::user()->nik }}</td>
+                                            <td>{{ Auth::user()->ktp_number }}</td>
+                                            <td>{{ Auth::user()->passport_number }}</td>
+                                            <td>{{ Auth::user()->jenis_kelamin }}</td>
+                                            <td>
+                                                <input type="text" name="no_telpon" class="form-control" value="{{ Auth::user()->telepon }}" placeholder="No Telepon" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <p>Kelas</p>
+                                <label style="color:#6B6F82;font-weight: normal;"><input type="radio" name="pesawat_kelas" value="Ekonomi" /> Ekonomi </label> 
+                                <label style="color:#6B6F82;font-weight: normal;"><input type="radio" name="pesawat_kelas" value="Bisnis" /> Bisnis </label>
+                            </div>
+                            <div class="col-md-4">
+                                <p>Maskapai</p> 
+                                <input type="text" class="form-control" name="pesawat_maskapai" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <p class="col-md-12">Pergi Bersama</p>
+                            <div class="col-md-8"> 
+                                <input type="text" class="form-control" name="pergi_bersama" placeholder="Type here.." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-12">Note</label>
+                            <div class="col-md-8"> 
+                                <input type="text" class="form-control" name="note" placeholder="Type here.." />
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="col-md-12" style="padding-left: 0;">
-                <a href="{{ route('karyawan.training.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
-                <button type="submit" class="btn btn-sm btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Submit Kegiatan</button>
-                <p>* Jika tidak menggunakan Pesawat silahkan langsung klik tombol submit </p>
-                <br style="clear: both;" />
+                    <div class="col-md-12" style="padding-left: 0;">
+                        <a href="{{ route('karyawan.training.index') }}" class="btn btn-sm btn-default waves-effect waves-light m-r-10"><i class="fa fa-arrow-left"></i> Cancel</a>
+                        <button type="submit" class="btn btn-sm btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i> Submit Kegiatan</button>
+                        <p>* Jika tidak menggunakan Pesawat silahkan langsung klik tombol submit </p>
+                        <br style="clear: both;" />
+                    </div>
+                </div>
             </div>
         </div>
     </div> 
@@ -691,10 +708,6 @@
     {
         $(el).parent().parent().remove();
     }
-
-    jQuery('.datepicker').datepicker({
-        format: 'yyyy-mm-dd',
-    });
 </script>
 <!-- ============================================================== -->
 <!-- End Page Content -->

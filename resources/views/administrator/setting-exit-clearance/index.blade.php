@@ -1,185 +1,183 @@
 @extends('layouts.administrator')
 
-@section('title', 'Setting Approval Exit Interview & Exit Clearance - PT. Arthaasia Finance')
+@section('title', 'Exit Interview & Exit Clearance Approval')
 
-@section('sidebar')
+@section('page-url', route('administrator.setting-exit-clearance.index'))
 
-@endsection
-
-@section('content')
-<!-- ============================================================== -->
-<!-- Page Content -->
-<!-- ============================================================== -->
-<div id="page-wrapper">
-    <div class="container-fluid">
-        <div class="row bg-title">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                <h4 class="page-title">Setting Approval Exit Interview & Exit Clearance</h4> </div>
-            <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
-                <ol class="breadcrumb">
-                    <li><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="active">Setting</li>
-                </ol>
+@section('content-2')
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Check By HRD</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-hrd"><i class="la la-plus"></i></a></li>
+              </ul>
             </div>
-            <!-- /.col-lg-12 -->
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NAMA</th>
+                                <th>JABATAN</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($hrd as $no => $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasi_job_role) ? $item->user->organisasi_job_role : '' }}</td>
+                                <td>
+                                    <a href="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" class="text-danger" onclick="return confirm('Delete this data ?')"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- .row -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0 pull-left">Check By HRD</h3>
-                    <a class="btn btn-info btn-xs pull-right add-hrd"><i class="fa fa-plus"></i> Tambah</a>
-                    <div class="clearfix"></div>
-                    <br />
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="30" class="text-center">#</th>
-                                    <th>NIK / NAMA</th>
-                                    <th>JABATAN</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($hrd as $no => $item)
-                                <tr>
-                                    <td>{{ ($no + 1) }}</td>
-                                    <td>{{ isset($item->user->name) ? $item->user->nik .'/'. $item->user->name : '' }}</td>
-                                    <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name : '' }}</td>
-                                    <td>
-                                        <form action="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0 pull-left">Check From General Affair (GA)</h3>
-                    <a class="btn btn-info btn-xs pull-right add-ga"><i class="fa fa-plus"></i> Tambah</a>
-                    <div class="clearfix"></div>
-                    <br />
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="30" class="text-center">#</th>
-                                    <th>NIK / NAMA</th>
-                                    <th>JABATAN</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($ga as $no => $item)
-                                <tr>
-                                    <td>{{ ($no + 1) }}</td>
-                                    <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
-                                    <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name : '' }}</td>
-                                    <td>
-                                        <form action="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0 pull-left">Check From IT</h3>
-                    <a class="btn btn-info btn-xs pull-right add-it"><i class="fa fa-plus"></i> Tambah</a>
-                    <div class="clearfix"></div>
-                    <br />
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="30" class="text-center">#</th>
-                                    <th>NIK / NAMA</th>
-                                    <th>JABATAN</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($it as $no => $item)
-                                <tr>
-                                    <td>{{ ($no + 1) }}</td>
-                                    <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
-                                    <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name : '' }}</td>
-                                    <td>
-                                        <form action="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>  
-            <div class="clearfix"></div>
-            <div class="col-md-4">
-                <div class="white-box">
-                    <h3 class="box-title m-b-0 pull-left">Check From Accounting & Finance</h3>
-                    <a class="btn btn-info btn-xs pull-right add-accounting"><i class="fa fa-plus"></i> Tambah</a>
-                    <div class="clearfix"></div>
-                    <br />
-                    <div class="table-responsive">
-                        <table class="table display nowrap" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
-                                    <th width="30" class="text-center">#</th>
-                                    <th>NIK / NAMA</th>
-                                    <th>JABATAN</th>
-                                    <th>#</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($accounting_finance as $no => $item)
-                                <tr>
-                                    <td>{{ ($no + 1) }}</td>
-                                    <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
-                                    <td>{{ isset($item->user->organisasiposition->name) ? $item->user->organisasiposition->name : '' }}</td>
-                                    <td>
-                                        <form action="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" onsubmit="return confirm('Hapus data ini?')" method="post" style="float: left;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}                                               
-                                            <button type="submit" class="btn btn-danger btn-xs m-r-5"><i class="ti-trash"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.row -->
-        <!-- ============================================================== -->
     </div>
-    <!-- /.container-fluid -->
-   @include('layouts.footer')
+
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Check From General Affair (GA)</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-ga"><i class="la la-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NAMA</th>
+                                <th>JABATAN</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($ga as $no => $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasi_job_role) ? $item->user->organisasi_job_role : '' }}</td>
+                                <td>
+                                    <a href="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" class="text-danger" onclick="return confirm('Delete this data ?')"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Check From IT</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-it"><i class="la la-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NAMA</th>
+                                <th>JABATAN</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($it as $no => $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasi_job_role) ? $item->user->organisasi_job_role : '' }}</td>
+                                <td>
+                                    <a href="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" class="text-danger" onclick="return confirm('Delete this data ?')"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Check From Accounting & Finance</h4>
+            <div class="heading-elements">
+              <ul class="list-inline mb-0">
+                <li><a class="add-accounting"><i class="la la-plus"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="card-text">
+                <section class="cd-horizontal-timeline loaded">
+                     <table class="table display nowrap" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="30" class="text-center">#</th>
+                                <th>NAMA</th>
+                                <th>JABATAN</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($accounting_finance as $no => $item)
+                            <tr>
+                                <td>{{ ($no + 1) }}</td>
+                                <td>{{ isset($item->user->name) ? $item->user->nik .' / '. $item->user->name : '' }}</td>
+                                <td>{{ isset($item->user->organisasi_job_role) ? $item->user->organisasi_job_role : '' }}</td>
+                                <td>
+                                    <a href="{{ route('administrator.setting-exit-clearance.destroy', $item->id) }}" class="text-danger" onclick="return confirm('Delete this data ?')"><i class="la la-trash"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
-<!-- ============================================================== -->
-<!-- End Page Content -->
-<!-- ============================================================== -->
 
 <!-- sample modal content -->
 <div id="modal_hrd" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
